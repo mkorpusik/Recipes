@@ -13,6 +13,10 @@ exports.index = function(req, res){
   res.render('index', { title: 'Express' });
 };
 
+exports.recipes = function(req, res){
+  res.render('recipes', { title: 'Recipes' });
+};
+
 exports.printURL = function(req, res){
   // res.render('index', { title: 'Express' });
   var url = req.body.url;

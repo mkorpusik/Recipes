@@ -11,11 +11,6 @@ var express = require('express')
 
 var app = express();
 
-var models = require('./models');
-var Recipe = models.Recipe;
-var Folder = models.Folder;
-var User = models.User;
-
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
   app.set('views', __dirname + '/views');
@@ -36,6 +31,7 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 app.get('/users', user.list);
+app.get('/recipes', routes.recipes);
 app.post('/printURL', routes.printURL);
 
 http.createServer(app).listen(app.get('port'), function(){

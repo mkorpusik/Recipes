@@ -48,6 +48,18 @@ var recipeOrganizer = {
   },
 
   /**
+  * Displays the button that, when clicked, navigates to recipes page.
+  */
+  displayButton: function() {
+    var button = document.createElement('BUTTON');
+    button.innerHTML = 'See Recipes';
+    button.onclick = function() {
+      chrome.tabs.create({ url: 'http://localhost:3000/recipes' });
+    };
+    document.body.appendChild(button);
+  },
+
+  /**
    * Flickr URL that will give us lots and lots of whatever we're looking for.
    *
    * See http://www.flickr.com/services/api/flickr.photos.search.html for
@@ -117,4 +129,5 @@ var recipeOrganizer = {
 document.addEventListener('DOMContentLoaded', function () {
   recipeOrganizer.callLocalHost();
   recipeOrganizer.displayFolders();
+  recipeOrganizer.displayButton();
 });
