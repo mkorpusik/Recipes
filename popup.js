@@ -12,11 +12,13 @@
 
 var QUERY = 'puppies';
 
-var kittenGenerator = {
-
+var recipeOrganizer = {
+  /**
+  * Gets the window's current URL and POSTs it to localhost's printURL route.
+  */
   callLocalHost: function() {
     chrome.tabs.query({active:true, currentWindow:true},function(tab){
-      console.log("tabs",tab);
+      // console.log("tabs",tab);
       url = tab[0].url;
       var req = new XMLHttpRequest();
       req.open("POST", 'http://localhost:3000/printURL', true);
@@ -25,6 +27,17 @@ var kittenGenerator = {
       req.send('url='+url);
     });
   },
+
+  /**
+  * Displays list of folders in the extension's popup window.
+  */
+  displayFolders: function() {
+    var img = document.createElement('img');
+    img.src = 'folder.png';
+    img.setAttribute('alt', 'test');
+    document.body.appendChild(img);
+  },
+
   /**
    * Flickr URL that will give us lots and lots of whatever we're looking for.
    *
@@ -93,14 +106,6 @@ var kittenGenerator = {
 
 // Run our kitten generation script as soon as the document's DOM is ready.
 document.addEventListener('DOMContentLoaded', function () {
-  kittenGenerator.callLocalHost();
-  // var url = chrome.runtime.getURL();
-  chrome.tabs.query({active:true, currentWindow:true},function(tab){
-    console.log("tabs",tab);
-    url = tab[0].url;
-    var test = document.createElement('div');
-    test.innerHTML = url;
-    document.body.appendChild(test);
-  });
-  // document.body.appendChild(url);
+  recipeOrganizer.callLocalHost();
+  recipeOrganizer.displayFolders();
 });
