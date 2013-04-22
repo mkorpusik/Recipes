@@ -14,13 +14,18 @@ exports.index = function(req, res){
 };
 
 exports.recipes = function(req, res){
-  res.render('recipes', { title: 'Recipes' });
+  // get all recipes from mongo and display on recipes page
+  var recipes =  Recipe.find({}).exec(function (err, docs) {
+  	// console.log(docs);
+  	res.render('recipes', { recipes:docs, title: 'Recipes' });
+  });
 };
 
 exports.printURL = function(req, res){
-  // res.render('index', { title: 'Express' });
+  // create new recipe using URL of current window and save to mongodb
   var url = req.body.url;
   console.log('url', url);
+
   var recipe = new Recipe({ url: url});
   recipe.save(function (err) {
   	if (err)
