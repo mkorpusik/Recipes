@@ -24,13 +24,26 @@ var recipeOrganizer = {
   displayFolders: function() {
     var folders = ['Desserts', 'Appetizers', 'Dinner', 'Party'];
     for (var i = 0; i < folders.length; i++) {
+      // add wrapper div
+      var folder = document.createElement('div');
+      folder.setAttribute('id', folders[i]);
+      document.body.appendChild(folder);
+
+      // add folder icon 
       var img = document.createElement('img');
       img.src = 'folder.png';
       img.setAttribute('alt', folders[i]);
       img.style.height = '40px';
       img.style.width = '40px';
-      img.style.display = 'block';
-      document.body.appendChild(img);
+      img.style.display = 'inline-block';
+      document.getElementById(folders[i]).appendChild(img);
+
+      // add label div
+      var label = document.createElement('div');
+      label.innerHTML = folders[i];
+      label.style.display = 'inline-block';
+      document.getElementById(folders[i]).appendChild(label);
+
     }
   },
 
