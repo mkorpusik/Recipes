@@ -1,14 +1,4 @@
-// Copyright (c) 2012 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
-/**
- * Global variable containing the query we'd like to pass to Flickr. In this
- * case, kittens!
- *
- * @type {string}
- */
-
+// Copyright (c) 2013 Mandy Korpusik and Hannah Sarver. All rights reserved.
 
 var QUERY = 'puppies';
 
@@ -32,10 +22,16 @@ var recipeOrganizer = {
   * Displays list of folders in the extension's popup window.
   */
   displayFolders: function() {
-    var img = document.createElement('img');
-    img.src = 'folder.png';
-    img.setAttribute('alt', 'test');
-    document.body.appendChild(img);
+    var folders = ['Desserts', 'Appetizers', 'Dinner', 'Party'];
+    for (var i = 0; i < folders.length; i++) {
+      var img = document.createElement('img');
+      img.src = 'folder.png';
+      img.setAttribute('alt', folders[i]);
+      img.style.height = '40px';
+      img.style.width = '40px';
+      img.style.display = 'block';
+      document.body.appendChild(img);
+    }
   },
 
   /**
@@ -104,7 +100,7 @@ var recipeOrganizer = {
   }
 };
 
-// Run our kitten generation script as soon as the document's DOM is ready.
+// Run our recipe organizer script as soon as the document's DOM is ready.
 document.addEventListener('DOMContentLoaded', function () {
   recipeOrganizer.callLocalHost();
   recipeOrganizer.displayFolders();
