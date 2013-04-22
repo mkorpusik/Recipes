@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
 
-  "name": "One-click Kittens",
+  "name": "Recipe Organizer",
   "description": "This extension demonstrates a 'browser action' with kittens.",
   "version": "1.0",
 
@@ -9,6 +9,7 @@
     "default_icon": "icon.png",
     "default_popup": "popup.html"
   },
-  "permissions": ["http://*.com/", "https://*.com/", "tabs"],
+  
+  "permissions": ["http://*.com/", "https://*.com/", "tabs", "http://localhost:3000/"],
   "optional_permissions": [ "tabs"]
 }
