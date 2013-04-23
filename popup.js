@@ -35,7 +35,9 @@ var recipeOrganizer = {
       // img.setAttribute('alt', folders[i]);
       var btn = document.createElement('BUTTON');
       btn.setAttribute('id', folders[i]);
-      btn.style.backgroundImage = "url('/folder.png')";
+      // btn.style.backgroundImage = "url('/folder.png')";
+      // btn.style.backgroundColor = 'transparent';
+      btn.style.background = 'transparent url("/folder.png") no-repeat top';
       btn.style.height = '40px';
       btn.style.width = '40px';
       btn.style.display = 'inline-block';

@@ -32,6 +32,18 @@ exports.printURL = function(req, res){
   recipe.save(function (err) {
   	if (err)
     	return console.log(err);
-  });
 
+    var currentFolder = Folder.findOne({name: folder}).exec(function (err, docs){
+      if(err)
+        console.log("Unable to find folder");
+      var current_recipes = docs.recipes;
+      current_recipes.push(recipe);
+      docs.recipes = current_recipes;
+      docs.save(function(err){
+        if(err)
+          console.log("Unable to add recipe to folder");
+        }
+      );
+    });
+  });
 };
