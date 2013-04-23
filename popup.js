@@ -6,7 +6,7 @@ var recipeOrganizer = {
   /**
   * Gets the window's current URL and POSTs it to localhost's printURL route.
   */
-  callLocalHost: function() {
+  callLocalHost: function(folderName) {
     chrome.tabs.query({active:true, currentWindow:true},function(tab){
       // console.log("tabs",tab);
       url = tab[0].url;
@@ -14,7 +14,7 @@ var recipeOrganizer = {
       req.open("POST", 'http://localhost:3000/printURL', true);
       req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       // var url = 'test'
-      req.send('url='+url);
+      req.send('url='+url+'&folder='+folderName);
     });
   },
 
@@ -30,13 +30,19 @@ var recipeOrganizer = {
       document.body.appendChild(folder);
 
       // add folder icon 
-      var img = document.createElement('img');
-      img.src = 'folder.png';
-      img.setAttribute('alt', folders[i]);
-      img.style.height = '40px';
-      img.style.width = '40px';
-      img.style.display = 'inline-block';
-      document.getElementById(folders[i]).appendChild(img);
+      // var img = document.createElement('img');
+      // img.src = 'folder.png';
+      // img.setAttribute('alt', folders[i]);
+      var btn = document.createElement('BUTTON');
+      btn.setAttribute('id', folders[i]);
+      btn.style.backgroundImage = "url('/folder.png')";
+      btn.style.height = '40px';
+      btn.style.width = '40px';
+      btn.style.display = 'inline-block';
+      btn.onclick = function() {
+        recipeOrganizer.callLocalHost(this.id);
+      };
+      document.getElementById(folders[i]).appendChild(btn);
 
       // add label div
       var label = document.createElement('div');
@@ -127,7 +133,7 @@ var recipeOrganizer = {
 
 // Run our recipe organizer script as soon as the document's DOM is ready.
 document.addEventListener('DOMContentLoaded', function () {
-  recipeOrganizer.callLocalHost();
+  // recipeOrganizer.callLocalHost();
   recipeOrganizer.displayFolders();
   recipeOrganizer.displayButton();
 });

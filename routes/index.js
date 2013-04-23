@@ -24,11 +24,14 @@ exports.recipes = function(req, res){
 exports.printURL = function(req, res){
   // create new recipe using URL of current window and save to mongodb
   var url = req.body.url;
+  var folder = req.body.folder;
   console.log('url', url);
+  console.log('folder', folder);
 
   var recipe = new Recipe({ url: url});
   recipe.save(function (err) {
   	if (err)
     	return console.log(err);
   });
+
 };
