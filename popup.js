@@ -18,6 +18,10 @@ var recipeOrganizer = {
     });
   },
 
+  createFolder: function() {
+     //
+  },
+
   /**
   * Displays list of folders in the extension's popup window.
   */
@@ -37,7 +41,9 @@ var recipeOrganizer = {
       btn.setAttribute('id', folders[i]);
       // btn.style.backgroundImage = "url('/folder.png')";
       // btn.style.backgroundColor = 'transparent';
-      btn.style.background = 'transparent url("/folder.png") no-repeat top';
+      btn.style.backgroundImage = 'url("http://localhost:3000/folder.png")';
+      btn.style.backgroundRepeat = 'no-repeat';
+      btn.style.backgroundSize = '35px 35px';
       btn.style.height = '40px';
       btn.style.width = '40px';
       btn.style.display = 'inline-block';
@@ -53,6 +59,22 @@ var recipeOrganizer = {
       document.getElementById(folders[i]).appendChild(label);
 
     }
+  },
+
+  displayNewFolder: function() {
+    var form = document.createElement('form');
+    form.setAttribute('method', 'post');
+    form.setAttribute('action', recipeOrganizer.createFolder());
+    var folderIn = document.createElement('input');
+    folderIn.setAttribute('type', 'text');
+    folderIn.setAttribute('name', 'newFolderName');
+    var submitButton = document.createElement('input');
+    submitButton.setAttribute('type', 'submit');
+    submitButton.setAttribute('value', "New Folder");
+
+    form.appendChild(folderIn);
+    form.appendChild(submitButton);
+    document.body.appendChild(form);
   },
 
   /**
@@ -137,5 +159,6 @@ var recipeOrganizer = {
 document.addEventListener('DOMContentLoaded', function () {
   // recipeOrganizer.callLocalHost();
   recipeOrganizer.displayFolders();
+  recipeOrganizer.displayNewFolder();
   recipeOrganizer.displayButton();
 });

@@ -9,13 +9,13 @@ var Recipe = mongoose.model('Recipe', recipeSchema);
 
 var folderSchema = mongoose.Schema({
   recipes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' }],
-  title: String
+  title: String,
+  owners: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
 });
 
 var Folder = mongoose.model('Folder', folderSchema);
 
 var userSchema = mongoose.Schema({
-  folders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Folder' }],
   name: String
 });
 
