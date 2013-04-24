@@ -18,15 +18,30 @@ var recipeOrganizer = {
     });
   },
 
-  createFolder: function() {
-     //
+  parseDOMString: function(responseText) {
+    var folderList = [];
+    responseText = responseText.split('"');
+    for (var i=0;i<responseText.length;i++){
+      if ((i+2)%2!=0) {
+        folderList.push(responseText[i]);
+      }
+    }
+    console.log(folderList);
+    return folderList;
   },
 
   /**
   * Displays list of folders in the extension's popup window.
   */
   displayFolders: function() {
-    var folders = ['Desserts', 'Appetizers', 'Dinner', 'Party'];
+    // get folder names from mongo db by GETting from local host
+    var folderNames = new XMLHttpRequest();
+    // folderNames.onreadystatechange = this.Testing;
+    folderNames.open("GET", 'http://localhost:3000/folders', false);
+    // folderNames.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    folderNames.send(null);
+    var folders = this.parseDOMString(folderNames.responseText);
+    // var folders = ['Desserts', 'Appetizers', 'Dinner', 'Party'];
     for (var i = 0; i < folders.length; i++) {
       // add wrapper div
       var folder = document.createElement('div');
@@ -41,7 +56,7 @@ var recipeOrganizer = {
       btn.setAttribute('id', folders[i]);
       // btn.style.backgroundImage = "url('/folder.png')";
       // btn.style.backgroundColor = 'transparent';
-      btn.style.backgroundImage = 'url("http://localhost:3000/folder.png")';
+      btn.style.backgroundImage = 'url("public/folder.png")';
       btn.style.backgroundRepeat = 'no-repeat';
       btn.style.backgroundSize = '35px 35px';
       btn.style.height = '40px';
@@ -64,7 +79,7 @@ var recipeOrganizer = {
   displayNewFolder: function() {
     var form = document.createElement('form');
     form.setAttribute('method', 'post');
-    form.setAttribute('action', recipeOrganizer.createFolder());
+    form.setAttribute('action', 'http://localhost:3000/addFolder');
     var folderIn = document.createElement('input');
     folderIn.setAttribute('type', 'text');
     folderIn.setAttribute('name', 'newFolderName');

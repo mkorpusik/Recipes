@@ -32,7 +32,9 @@ app.configure('development', function(){
 app.get('/', routes.index);
 app.get('/users', user.list);
 app.get('/recipes', routes.recipes);
+app.get('/folders', routes.folders);
 app.post('/printURL', routes.printURL);
+app.post('/addFolder', routes.addFolder);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

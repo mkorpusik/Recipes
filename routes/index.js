@@ -13,11 +13,33 @@ exports.index = function(req, res){
   res.render('index', { title: 'Express' });
 };
 
+exports.addFolder = function(req, res){
+  var folderName = req.body.newFolderName;
+  var folder = new Folder({ title: folderName});
+  if (folderName.length > 0) {
+    folder.save(function (err) {
+      if (err)
+        return console.log(err);
+    });
+  }
+};
+
 exports.recipes = function(req, res){
   // get all recipes from mongo and display on recipes page
-  var recipes =  Recipe.find({}).exec(function (err, docs) {
+  var folders =  Folder.find({}).populate('recipes').exec(function (err, docs) {
   	// console.log(docs);
-  	res.render('recipes', { recipes:docs, title: 'Recipes' });
+  	res.render('recipes', { folders:docs, title: 'Recipes' });
+  });
+};
+
+exports.folders = function(req, res){
+  // get all folder names from mongo and display on popup
+  var folders =  Folder.find({}).exec(function (err, docs) {
+    var folderNames = [];
+    for (var i in docs) {
+      folderNames.push(docs[i].title);
+    }
+    res.send(folderNames);
   });
 };
 
@@ -33,7 +55,7 @@ exports.printURL = function(req, res){
   	if (err)
     	return console.log(err);
 
-    var currentFolder = Folder.findOne({name: folder}).exec(function (err, docs){
+    var currentFolder = Folder.findOne({title: folder}).exec(function (err, docs){
       if(err)
         console.log("Unable to find folder");
       var current_recipes = docs.recipes;

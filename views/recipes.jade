@@ -2,5 +2,7 @@ extends layout
 
 block content
   h1= title
-  each recipe, i in recipes 
-    p #{recipe.url}
+  each folder, i in folders 
+    h3 #{folder.title} 
+    each recipe, i in folder.recipes
+      p #{recipe.url}
