@@ -6,5 +6,5 @@ block content
     h3 #{folder.title} 
     each recipe, i in folder.recipes
       p #{recipe.title}
-      p #{recipe.url} 
-      p #{recipe.img}
+      a(href="#{recipe.url}")
+        img(src="#{recipe.img}")

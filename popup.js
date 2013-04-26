@@ -10,7 +10,8 @@ var recipeOrganizer = {
       // console.log("tabs",tab);
       url = tab[0].url;
       title = tab[0].title;
-      img = "";
+      // img = "icon2.png";
+      img = "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTkxN2BmcHpPHvSrCeruiURn9fT66lA17GldKluG_Jol9zMMj4q";
       console.log(tab[0]);
       var xhr = new XMLHttpRequest();
       xhr.open("GET", url, false);
@@ -18,7 +19,9 @@ var recipeOrganizer = {
         if (xhr.readyState == 4) {
           var page = $('<div>').html(xhr.responseText)[0];
           console.log($("#imgPhoto", page).attr("src"));
-          img = $("#imgPhoto", page).attr("src");
+          img2 = $("#imgPhoto", page).attr("src");
+          if (img2 != undefined)
+            img = img2;
         }
       }
       xhr.send(null);
