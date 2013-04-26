@@ -1,15 +1,21 @@
 {
-  "manifest_version": 2,
-
-  "name": "Recipe Organizer",
-  "description": "This extension demonstrates a 'browser action' with kittens.",
-  "version": "1.0",
+  "name": "SAMPLE_NAME",
+  "version": "0.1",
+  "manifest_version" : 2,
+  "description": "SAMPLE_DESCRIPTION",
+  "content_scripts": [
+  {
+    "matches": ["http://*/*"],
+    "js": ["jquery.js"],
+    "run_at": "document_idle"
+  }
+  ],
 
   "browser_action": {
     "default_icon": "icon2.png",
     "default_popup": "popup.html"
-  },
-  
+    },
+
   "permissions": ["http://*.com/", "https://*.com/", "tabs", "http://localhost:3000/"],
-  "optional_permissions": [ "tabs"]
+    "optional_permissions": [ "tabs"]
 }

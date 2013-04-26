@@ -22,6 +22,9 @@ exports.addFolder = function(req, res){
         return console.log(err);
     });
   }
+  // window.location.reload();
+  // window.location.href = "popup.html";
+  // chrome.browserAction.setPopup({popup: "popup.html"});
 };
 
 exports.recipes = function(req, res){
