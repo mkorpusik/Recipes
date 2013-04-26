@@ -9,11 +9,25 @@ var recipeOrganizer = {
     chrome.tabs.query({active:true, currentWindow:true},function(tab){
       // console.log("tabs",tab);
       url = tab[0].url;
+      title = tab[0].title;
+      img = "";
+      console.log(tab[0]);
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", url, false);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+          var page = $('<div>').html(xhr.responseText)[0];
+          console.log($("#imgPhoto", page).attr("src"));
+          img = $("#imgPhoto", page).attr("src");
+        }
+      }
+      xhr.send(null);
+
       var req = new XMLHttpRequest();
       req.open("POST", 'http://localhost:3000/printURL', true);
       req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       // var url = 'test'
-      req.send('url='+url+'&folder='+folderName);
+      req.send('url='+url+'&folder='+folderName+'&title='+title+'&img='+img);
     });
   },
 

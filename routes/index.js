@@ -3,7 +3,7 @@
  * GET home page.
  */
 
-
+var YQL = require("yql");
 var models = require('../models');
 var Recipe = models.Recipe;
 var Folder = models.Folder;
@@ -50,13 +50,19 @@ exports.printURL = function(req, res){
   // create new recipe using URL of current window and save to mongodb
   var url = req.body.url;
   var folder = req.body.folder;
+  var title = req.body.title;
+  var img = req.body.img;
   console.log('url', url);
   console.log('folder', folder);
+  // results = jQuery('#imgPhoto');
+  // img = results.src;
+  // console.log("results", img);
 
-  var recipe = new Recipe({ url: url});
+  // add to mongoose db
+  var recipe = new Recipe({ url: url, title:title, img:img});
   recipe.save(function (err) {
-  	if (err)
-    	return console.log(err);
+    if (err)
+      return console.log(err);
 
     var currentFolder = Folder.findOne({title: folder}).exec(function (err, docs){
       if(err)
