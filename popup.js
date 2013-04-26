@@ -17,9 +17,20 @@ var recipeOrganizer = {
       xhr.open("GET", url, false);
       xhr.onreadystatechange = function() {
         if (xhr.readyState == 4) {
+
           var page = $('<div>').html(xhr.responseText)[0];
-          console.log($("#imgPhoto", page).attr("src"));
-          img2 = $("#imgPhoto", page).attr("src");
+
+          if (url.match("allrecipes.com")){
+            console.log("all recipes");
+            img2 = $("#imgPhoto", page).attr("src");
+            console.log(img2);
+          }
+          else if (url.match("epicurious.com")) {
+            console.log("epicurious");
+            img2 = "http://www.epicurious.com"+$(".photo", page).attr('src');
+            console.log(img2);
+          }
+          
           if (img2 != undefined)
             img = img2;
         }
