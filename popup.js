@@ -117,29 +117,29 @@ var recipeOrganizer = {
   },
 
 
-  displayLogin: function() {
-    var form = document.createElement('form');
-    form.setAttribute('id', 'loginForm');
-    var email = document.createElement('input');
-    email.setAttribute('type', 'text');
-    email.setAttribute('name', 'userEmail');
-    var password = document.createElement('input');
-    password.setAttribute('type', 'text');
-    password.setAttribute('name', 'userPassword');
-    var submitButton = document.createElement('input');
-    submitButton.setAttribute('type', 'submit');
-    submitButton.setAttribute('value', "Create Account");
+  // displayLogin: function() {
+  //   var form = document.createElement('form');
+  //   form.setAttribute('id', 'loginForm');
+  //   var email = document.createElement('input');
+  //   email.setAttribute('type', 'text');
+  //   email.setAttribute('name', 'userEmail');
+  //   var password = document.createElement('input');
+  //   password.setAttribute('type', 'text');
+  //   password.setAttribute('name', 'userPassword');
+  //   var submitButton = document.createElement('input');
+  //   submitButton.setAttribute('type', 'submit');
+  //   submitButton.setAttribute('value', "Create Account");
 
-    form.appendChild(email);
-    form.appendChild(password);
-    form.appendChild(submitButton);
-    document.body.appendChild(form);
+  //   form.appendChild(email);
+  //   form.appendChild(password);
+  //   form.appendChild(submitButton);
+  //   document.body.appendChild(form);
 
-    jQuery('#loginForm').on('submit', function () {
-      jQuery.post("http://localhost:3000/login", jQuery('#loginForm').serialize());
-      return true;
-    });
-  },
+  //   jQuery('#loginForm').on('submit', function () {
+  //     jQuery.post("http://localhost:3000/login", jQuery('#loginForm').serialize());
+  //     return true;
+  //   });
+  // },
 
   displayNewFolder: function(usrEmail) {
     var form = document.createElement('form');
@@ -172,6 +172,7 @@ var recipeOrganizer = {
   */
   displayButton: function(usrEmail) {
     var button = document.createElement('BUTTON');
+    // button.setAttribute('class', 'btn');
     button.innerHTML = 'See Recipes';
     button.onclick = function() {
       chrome.tabs.create({ url: 'http://localhost:3000/recipes/:'+usrEmail });
