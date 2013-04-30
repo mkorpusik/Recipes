@@ -186,6 +186,7 @@ document.addEventListener('DOMContentLoaded', function () {
     xhr.onreadystatechange = function() { 
       if( xhr.readyState == 4 ) {
         if( xhr.status == 200 ) { 
+          console.log("status 200");
           var parseResult = JSON.parse(xhr.responseText);
           // The email address is located naw: 
           usrEmail = parseResult["email"];
@@ -194,6 +195,7 @@ document.addEventListener('DOMContentLoaded', function () {
           recipeOrganizer.displayNewFolder(usrEmail);
           recipeOrganizer.displayButton(usrEmail);
         } else {
+          console.log("status not 200");
           usrEmail = "mandy.korpusik@students.olin.edu";
           console.log("error: use default email", usrEmail);
           recipeOrganizer.displayFolders(usrEmail);
@@ -229,10 +231,10 @@ googleAuth.authorize(function() {
           var parseResult = JSON.parse(xhr.responseText);
           // The email address is located naw: 
           usrEmail = parseResult["email"];
-          console.log("email", usrEmail);
-          recipeOrganizer.displayFolders(usrEmail);
-          recipeOrganizer.displayNewFolder(usrEmail);
-          recipeOrganizer.displayButton(usrEmail);
+          // console.log("email", usrEmail);
+          // recipeOrganizer.displayFolders(usrEmail);
+          // recipeOrganizer.displayNewFolder(usrEmail);
+          // recipeOrganizer.displayButton(usrEmail);
         }
       }
     }

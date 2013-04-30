@@ -413,6 +413,7 @@ OAuth2.prototype.authorize = function(callback) {
 
     that.adapter = OAuth2.adapters[that.adapterName];
     var data = that.get();  
+    console.log("data", data);
     if (!data.accessToken) {
       console.log("no access token");
       // There's no access token yet. Start the authorizationCode flow

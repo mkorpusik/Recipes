@@ -6,16 +6,18 @@ block content
   each folder, i in folders 
     div(id=folder._id, class="folder")
         h3 #{folder.title} 
-        h4 shared with #{folder.owners}
-        button(type="submit", name="folder", value=folder._id, class="deleteFolder")
-            | Delete Folder
-        form(action="/shareFolder", method="post")
-            input(type="text", name="sharer")
-            input(type="hidden", name="folder", value=folder._id)
-            input(type="hidden", name="email", value=email)
-            input(type="submit", value="Share Folder", class="shareFolder")
+        div(class="title-wrapper")
+          h4 shared with #{folder.owners}
+        form(action="/shareFolder", method="post", class="form-inline")
+            input(type="text", name="sharer", placeholder="Friend's Email", class="input-small")
+            input(type="hidden", name="folder", value=folder._id, class="input-small")
+            input(type="hidden", name="email", value=email, class="input-small")
+            input(type="submit", value="Share Folder", class="shareFolder btn")
                 | Share Folder
+        button(type="submit", name="folder", value=folder._id, class="deleteFolder btn")
+            | Delete Folder
         each recipe, i in folder.recipes
-          p #{recipe.title}
+          div(class="title-wrapper")
+            h4 #{recipe.title}
           a(href="#{recipe.url}")
             img(src="#{recipe.img}", width="150px", height="150px")
