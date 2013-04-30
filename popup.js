@@ -19,6 +19,7 @@ var recipeOrganizer = {
         if (xhr.readyState == 4) {
 
           var page = $('<div>').html(xhr.responseText)[0];
+          var img2 = undefined;
 
           if (url.match("allrecipes.com")){
             console.log("all recipes");
@@ -33,7 +34,7 @@ var recipeOrganizer = {
           
           if (img2 != undefined)
             img = img2;
-        }
+        }oauth2/lib/oauth2.js
       }
       xhr.send(null);
 
@@ -141,3 +142,37 @@ document.addEventListener('DOMContentLoaded', function () {
   recipeOrganizer.displayNewFolder();
   recipeOrganizer.displayButton();
 });
+
+// var googleAuth = new OAuth2('google', {
+//   client_id: '1049899099134.apps.googleusercontent.com',
+//   client_secret: 'Vu_dfcSLcK1e7cxfHWGsGRhP',
+//   api_scope: 'https://www.googleapis.com/auth/userinfo.email'
+// });
+
+// console.log(googleAuth.getAccessToken());
+
+// googleAuth.authorize(function() {
+  // We should now have googleAuth.getAccessToken() returning a valid token value for us 
+  // Create an XMLHttpRequest to get the email address 
+  // console.log("authorizing");
+  // var xhr = new XMLHttpRequest();
+  // xhr.onreadystatechange = function() { 
+  //   if( xhr.readyState == 4 ) {
+  //     if( xhr.status == 200 ) { 
+  //       var parseResult = JSON.parse(xhr.responseText);
+  //       // The email address is located naw: 
+  //       var email = parseResult["email"];
+  //       console.log("email", email)
+  //     }
+  //   }
+  // }
+  // // Open it up as GET, POST didn't work for me for the userinfo 
+  // xhr.open("GET","https://www.googleapis.com/oauth2/v1/userinfo",true);
+  // // Set the content & autherization 
+  // xhr.setRequestHeader('Content-Type', 'application/json');
+  // xhr.setRequestHeader('Authorization', "OAuth " + googleAuth.getAccessToken() );
+  // xhr.send(null);
+  // // Debugging stuff so we can see everything in the xhr.  Do not leave this in production code 
+  // console.log("xhr", xhr);
+//   console.log(googleAuth.getAccessToken());
+// });

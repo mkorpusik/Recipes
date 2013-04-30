@@ -2,9 +2,19 @@ extends layout
 
 block content
   h1= title
+  div(class="wrapper")
   each folder, i in folders 
-    h3 #{folder.title} 
-    each recipe, i in folder.recipes
-      p #{recipe.title}
-      a(href="#{recipe.url}")
-        img(src="#{recipe.img}")
+    div(id=folder._id, class="folder")
+        h3 #{folder.title} 
+        h4 shared with #{folder.owners}
+        button(type="submit", name="folder", value=folder._id, class="deleteFolder")
+            | Delete Folder
+        form(action="/shareFolder", method="post")
+            input(type="text", name="sharer")
+            input(type="hidden", name="folder", value=folder._id)
+            input(type="submit", value="Share Folder", class="shareFolder")
+                | Share Folder
+        each recipe, i in folder.recipes
+          p #{recipe.title}
+          a(href="#{recipe.url}")
+            img(src="#{recipe.img}", width="150px", height="150px")

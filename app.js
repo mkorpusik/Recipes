@@ -35,6 +35,8 @@ app.get('/recipes', routes.recipes);
 app.get('/folders', routes.folders);
 app.post('/printURL', routes.printURL);
 app.post('/addFolder', routes.addFolder);
+app.post('/deleteFolder', routes.deleteFolder);
+app.post('/shareFolder', routes.shareFolder);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

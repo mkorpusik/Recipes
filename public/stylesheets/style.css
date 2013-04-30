@@ -6,3 +6,18 @@ body {
 a {
   color: #00B7FF;
 }
+
+.folder{
+	margin:0px;
+	padding: 0px;
+	width: 300px;
+/*	height:764px;
+*/	display:inline-block;
+	float:left;
+}
+
+.wrapper{
+	width: 12000px;
+	overflow: auto;
+	float:left;
+}

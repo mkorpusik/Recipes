@@ -3,7 +3,6 @@
  * GET home page.
  */
 
-var YQL = require("yql");
 var models = require('../models');
 var Recipe = models.Recipe;
 var Folder = models.Folder;
@@ -12,6 +11,31 @@ var User = models.User;
 exports.index = function(req, res){
   res.render('index', { title: 'Express' });
 };
+
+exports.deleteFolder = function(req, res) {
+  Folder.remove({'_id': req.body.folder}).exec(
+    function (err) {
+      if (err) return handleError(err);
+      // remember to send the response!
+      res.send('check');
+  });
+}
+
+exports.shareFolder = function(req, res) {
+    var currentFolder = Folder.findOne({'_id': req.body.folder}).exec(function (err, docs){
+      if(err)
+        console.log("Unable to find folder");
+      var current_owners = docs.owners;
+      current_owners.push(req.body.sharer);
+      docs.owners = current_owners;
+      docs.save(function(err){
+        if(err)
+          console.log("Unable to add friend to folder");
+        res.redirect('/recipes');
+        }
+      );
+    });
+}
 
 exports.addFolder = function(req, res){
   var folderName = req.body.newFolderName;
@@ -29,7 +53,7 @@ exports.addFolder = function(req, res){
 
 exports.recipes = function(req, res){
   // get all recipes from mongo and display on recipes page
-  var folders =  Folder.find({}).populate('recipes').exec(function (err, docs) {
+  var folders =  Folder.find({}).sort('title').populate('recipes').exec(function (err, docs) {
   	// console.log(docs);
   	res.render('recipes', { folders:docs, title: 'Recipes' });
   });
@@ -37,7 +61,7 @@ exports.recipes = function(req, res){
 
 exports.folders = function(req, res){
   // get all folder names from mongo and display on popup
-  var folders =  Folder.find({}).exec(function (err, docs) {
+  var folders =  Folder.find({}).sort('title').exec(function (err, docs) {
     var folderNames = [];
     for (var i in docs) {
       folderNames.push(docs[i].title);

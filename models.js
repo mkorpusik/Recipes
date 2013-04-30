@@ -12,7 +12,8 @@ var Recipe = mongoose.model('Recipe', recipeSchema);
 var folderSchema = mongoose.Schema({
   recipes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' }],
   title: String,
-  owners: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
+  owners: [String]
+  // owners: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
 });
 
 var Folder = mongoose.model('Folder', folderSchema);

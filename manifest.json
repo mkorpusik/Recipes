@@ -6,8 +6,7 @@
   "content_scripts": [
   {
     "matches": ["http://*/*"],
-    "js": ["jquery.js"],
-    "run_at": "document_idle"
+    "js": ["oauth2_inject.js"]
   }
   ],
 
@@ -16,6 +15,6 @@
     "default_popup": "popup.html"
     },
 
-  "permissions": ["http://*.com/", "https://*.com/", "tabs", "http://localhost:3000/"],
+  "permissions": ["http://*.com/", "https://*.com/", "tabs", "http://localhost:3000/", "https://accounts.google.com/o/oauth2/token", "https://www.googleapis.com/oauth2/v1/userinfo"],
     "optional_permissions": [ "tabs"]
 }
