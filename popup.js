@@ -182,68 +182,67 @@ var recipeOrganizer = {
 
 // Run our recipe organizer script as soon as the document's DOM is ready.
 document.addEventListener('DOMContentLoaded', function () {
-  // recipeOrganizer.callLocalHost();
-
-  // if (recipeOrganizer.seeIfUser()) {
-  //   recipeOrganizer.displayFolders();
-  //   recipeOrganizer.displayNewFolder();
-  //   recipeOrganizer.displayButton();
-  // } else {
-  //   recipeOrganizer.displayLogin();
-  // }
-var xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = function() { 
-    if( xhr.readyState == 4 ) {
-      if( xhr.status == 200 ) { 
-        var parseResult = JSON.parse(xhr.responseText);
-        // The email address is located naw: 
-        usrEmail = parseResult["email"];
-        console.log("email", usrEmail);
-        recipeOrganizer.displayFolders(usrEmail);
-        recipeOrganizer.displayNewFolder(usrEmail);
-        recipeOrganizer.displayButton(usrEmail);
+  var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() { 
+      if( xhr.readyState == 4 ) {
+        if( xhr.status == 200 ) { 
+          var parseResult = JSON.parse(xhr.responseText);
+          // The email address is located naw: 
+          usrEmail = parseResult["email"];
+          console.log("email", usrEmail);
+          recipeOrganizer.displayFolders(usrEmail);
+          recipeOrganizer.displayNewFolder(usrEmail);
+          recipeOrganizer.displayButton(usrEmail);
+        } else {
+          usrEmail = "mandy.korpusik@students.olin.edu";
+          console.log("error: use default email", usrEmail);
+          recipeOrganizer.displayFolders(usrEmail);
+          recipeOrganizer.displayNewFolder(usrEmail);
+          recipeOrganizer.displayButton(usrEmail);
+        }
       }
     }
-  }
-  // Open it up as GET, POST didn't work for me for the userinfo 
-  xhr.open("GET","https://www.googleapis.com/oauth2/v1/userinfo",true);
-  // Set the content & autherization 
-  xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.setRequestHeader('Authorization', "OAuth " + googleAuth.getAccessToken() );
-  xhr.send(null);
-  
+    // Open it up as GET, POST didn't work for me for the userinfo 
+    xhr.open("GET","https://www.googleapis.com/oauth2/v1/userinfo",true);
+    // Set the content & autherization 
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Authorization', "OAuth " + googleAuth.getAccessToken() );
+    xhr.send(null);
+    
 });
 
 var googleAuth = new OAuth2('google', {
   client_id: '1049899099134.apps.googleusercontent.com',
   client_secret: 'Vu_dfcSLcK1e7cxfHWGsGRhP',
   api_scope: 'https://www.googleapis.com/auth/userinfo.email'
+  // api_scope: 'https://www.googleapis.com/auth/tasks'
 });
-
-console.log(googleAuth.getAccessToken());
 
 googleAuth.authorize(function() {
-  //We should now have googleAuth.getAccessToken() returning a valid token value for us 
-  //Create an XMLHttpRequest to get the email address 
-  console.log("authorizing");
-  var xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = function() { 
-    if( xhr.readyState == 4 ) {
-      if( xhr.status == 200 ) { 
-        var parseResult = JSON.parse(xhr.responseText);
-        // The email address is located naw: 
-        email = parseResult["email"];
-        console.log("email", email);
+    //We should now have googleAuth.getAccessToken() returning a valid token value for us 
+    //Create an XMLHttpRequest to get the email address 
+    console.log("authorizing");
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() { 
+      if( xhr.readyState == 4 ) {
+        if( xhr.status == 200 ) { 
+          var parseResult = JSON.parse(xhr.responseText);
+          // The email address is located naw: 
+          usrEmail = parseResult["email"];
+          console.log("email", usrEmail);
+          recipeOrganizer.displayFolders(usrEmail);
+          recipeOrganizer.displayNewFolder(usrEmail);
+          recipeOrganizer.displayButton(usrEmail);
+        }
       }
     }
-  }
-  // Open it up as GET, POST didn't work for me for the userinfo 
-  xhr.open("GET","https://www.googleapis.com/oauth2/v1/userinfo",true);
-  // Set the content & autherization 
-  xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.setRequestHeader('Authorization', "OAuth " + googleAuth.getAccessToken() );
-  xhr.send(null);
-  // Debugging stuff so we can see everything in the xhr.  Do not leave this in production code 
-  console.log("xhr", xhr);
-  console.log(googleAuth.getAccessToken());
-});
+    // Open it up as GET, POST didn't work for me for the userinfo 
+    xhr.open("GET","https://www.googleapis.com/oauth2/v1/userinfo",true);
+    // Set the content & autherization 
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Authorization', "OAuth " + googleAuth.getAccessToken() );
+    xhr.send(null);
+    // Debugging stuff so we can see everything in the xhr.  Do not leave this in production code 
+    console.log("xhr", xhr);
+    console.log(googleAuth.getAccessToken());
+  });

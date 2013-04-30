@@ -53,7 +53,7 @@ exports.shareFolder = function(req, res) {
       docs.save(function(err){
         if(err)
           console.log("Unable to add friend to folder");
-        res.redirect('/recipes');
+        res.redirect('/recipes/:'+req.body.email);
         }
       );
     });
@@ -80,7 +80,7 @@ exports.recipes = function(req, res){
   console.log("email in recipes route", email);
   var folders =  Folder.find({owners: email}).sort('title').populate('recipes').exec(function (err, docs) {
   	// console.log(docs);
-  	res.render('recipes', { folders:docs, title: 'Recipes' });
+  	res.render('recipes', { folders:docs, email:email, title: 'Recipes' });
   });
 };
 

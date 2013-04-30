@@ -414,11 +414,14 @@ OAuth2.prototype.authorize = function(callback) {
     that.adapter = OAuth2.adapters[that.adapterName];
     var data = that.get();  
     if (!data.accessToken) {
+      console.log("no access token");
       // There's no access token yet. Start the authorizationCode flow
       that.openAuthorizationCodePopup(callback);
     } else if (that.isAccessTokenExpired()) {
+      console.log("expired access token", data);
       // There's an existing access token but it's expired
       if (data.refreshToken) {
+        console.log("refresh token");
         that.refreshAccessToken(data.refreshToken, function(at, exp, re) {
           var newData = that.get();
           newData.accessTokenDate = new Date().valueOf();
@@ -432,10 +435,12 @@ OAuth2.prototype.authorize = function(callback) {
           }
         });
       } else {
+        console.log("no refresh token");
         // No refresh token... just do the popup thing again
         that.openAuthorizationCodePopup(callback);
       }
     } else {
+      console.log("access token exists!", data.accessToken);
       // We have an access token, and it's not expired yet
       if (callback) {
         callback();

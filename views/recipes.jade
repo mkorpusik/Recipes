@@ -12,6 +12,7 @@ block content
         form(action="/shareFolder", method="post")
             input(type="text", name="sharer")
             input(type="hidden", name="folder", value=folder._id)
+            input(type="hidden", name="email", value=email)
             input(type="submit", value="Share Folder", class="shareFolder")
                 | Share Folder
         each recipe, i in folder.recipes
