@@ -446,6 +446,7 @@ OAuth2.prototype.authorize = function(callback) {
       if (callback) {
         callback();
       }
+      // that.openAuthorizationCodePopup(callback);
     }
   });
 };

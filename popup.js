@@ -217,8 +217,8 @@ document.addEventListener('DOMContentLoaded', function () {
 var googleAuth = new OAuth2('google', {
   client_id: '1049899099134.apps.googleusercontent.com',
   client_secret: 'Vu_dfcSLcK1e7cxfHWGsGRhP',
+  api_scope: 'https://www.googleapis.com/auth/tasks', 
   api_scope: 'https://www.googleapis.com/auth/userinfo.email'
-  // api_scope: 'https://www.googleapis.com/auth/tasks'
 });
 
 googleAuth.authorize(function() {
