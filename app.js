@@ -32,8 +32,8 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 app.get('/users', user.list);
-app.get('/recipes', routes.recipes);
-app.get('/folders', routes.folders);
+app.get('/recipes/:email', routes.recipes);
+app.get('/folders/:email', routes.folders);
 app.post('/login', routes.login);
 app.get('/checkUser', routes.checkUser);
 app.post('/printURL', routes.printURL);

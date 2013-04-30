@@ -61,7 +61,8 @@ exports.shareFolder = function(req, res) {
 
 exports.addFolder = function(req, res){
   var folderName = req.body.newFolderName;
-  var folder = new Folder({ title: folderName});
+  var userEmail = req.body.userEmail;
+  var folder = new Folder({ title: folderName, owners : [userEmail]});
   if (folderName.length > 0) {
     folder.save(function (err) {
       if (err)
@@ -75,7 +76,9 @@ exports.addFolder = function(req, res){
 
 exports.recipes = function(req, res){
   // get all recipes from mongo and display on recipes page
-  var folders =  Folder.find({}).sort('title').populate('recipes').exec(function (err, docs) {
+  var email = req.params.email.slice(1);
+  console.log("email in recipes route", email);
+  var folders =  Folder.find({owners: email}).sort('title').populate('recipes').exec(function (err, docs) {
   	// console.log(docs);
   	res.render('recipes', { folders:docs, title: 'Recipes' });
   });
@@ -83,7 +86,8 @@ exports.recipes = function(req, res){
 
 exports.folders = function(req, res){
   // get all folder names from mongo and display on popup
-  var folders =  Folder.find({}).sort('title').exec(function (err, docs) {
+  var email = req.params.email.slice(1);
+  var folders =  Folder.find({owners: email}).sort('title').exec(function (err, docs) {
     var folderNames = [];
     for (var i in docs) {
       folderNames.push(docs[i].title);

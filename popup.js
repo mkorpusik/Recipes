@@ -1,5 +1,6 @@
 // Copyright (c) 2013 Mandy Korpusik and Hannah Sarver. All rights reserved.
 
+var email;
 
 var recipeOrganizer = {
   /**
@@ -61,10 +62,12 @@ var recipeOrganizer = {
   /**
   * Displays list of folders in the extension's popup window.
   */
-  displayFolders: function() {
+  displayFolders: function(usrEmail) {
+    console.log('displaying folders');
+
     // get folder names from mongo db by GETting from local host
     var folderNames = new XMLHttpRequest();
-    folderNames.open("GET", 'http://localhost:3000/folders', false);
+    folderNames.open("GET", 'http://localhost:3000/folders/:'+usrEmail, false);
     folderNames.send(null);
     var folders = this.parseDOMString(folderNames.responseText);
     // var folders = ['Desserts', 'Appetizers', 'Dinner', 'Party'];
@@ -98,7 +101,6 @@ var recipeOrganizer = {
       label.innerHTML = folders[i];
       label.style.display = 'inline-block';
       document.getElementById(folders[i]).appendChild(label);
-
     }
   },
 
@@ -139,17 +141,22 @@ var recipeOrganizer = {
     });
   },
 
-  displayNewFolder: function() {
+  displayNewFolder: function(usrEmail) {
     var form = document.createElement('form');
     form.setAttribute('id', 'addFolderForm');
     var folderIn = document.createElement('input');
     folderIn.setAttribute('type', 'text');
     folderIn.setAttribute('name', 'newFolderName');
+    var emailHidden = document.createElement('input');
+    emailHidden.setAttribute('type', 'hidden');
+    emailHidden.setAttribute('name', 'userEmail');
+    emailHidden.setAttribute('value', usrEmail);
     var submitButton = document.createElement('input');
     submitButton.setAttribute('type', 'submit');
     submitButton.setAttribute('value', "New Folder");
 
     form.appendChild(folderIn);
+    form.appendChild(emailHidden);
     form.appendChild(submitButton);
     document.body.appendChild(form);
 
@@ -157,16 +164,17 @@ var recipeOrganizer = {
       jQuery.post("http://localhost:3000/addFolder", jQuery('#addFolderForm').serialize());
       return true;
     });
+    
   },
 
   /**
   * Displays the button that, when clicked, navigates to recipes page.
   */
-  displayButton: function() {
+  displayButton: function(usrEmail) {
     var button = document.createElement('BUTTON');
     button.innerHTML = 'See Recipes';
     button.onclick = function() {
-      chrome.tabs.create({ url: 'http://localhost:3000/recipes' });
+      chrome.tabs.create({ url: 'http://localhost:3000/recipes/:'+usrEmail });
     };
     document.body.appendChild(button);
   }
@@ -183,10 +191,26 @@ document.addEventListener('DOMContentLoaded', function () {
   // } else {
   //   recipeOrganizer.displayLogin();
   // }
-
-    recipeOrganizer.displayFolders();
-    recipeOrganizer.displayNewFolder();
-    recipeOrganizer.displayButton();
+var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() { 
+    if( xhr.readyState == 4 ) {
+      if( xhr.status == 200 ) { 
+        var parseResult = JSON.parse(xhr.responseText);
+        // The email address is located naw: 
+        usrEmail = parseResult["email"];
+        console.log("email", usrEmail);
+        recipeOrganizer.displayFolders(usrEmail);
+        recipeOrganizer.displayNewFolder(usrEmail);
+        recipeOrganizer.displayButton(usrEmail);
+      }
+    }
+  }
+  // Open it up as GET, POST didn't work for me for the userinfo 
+  xhr.open("GET","https://www.googleapis.com/oauth2/v1/userinfo",true);
+  // Set the content & autherization 
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.setRequestHeader('Authorization', "OAuth " + googleAuth.getAccessToken() );
+  xhr.send(null);
   
 });
 
@@ -208,7 +232,7 @@ googleAuth.authorize(function() {
       if( xhr.status == 200 ) { 
         var parseResult = JSON.parse(xhr.responseText);
         // The email address is located naw: 
-        var email = parseResult["email"];
+        email = parseResult["email"];
         console.log("email", email);
       }
     }
