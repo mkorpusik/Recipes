@@ -7,7 +7,8 @@ var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
+  , bcrypt = require('bcrypt');
 
 var app = express();
 
@@ -33,6 +34,8 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 app.get('/recipes', routes.recipes);
 app.get('/folders', routes.folders);
+app.post('/login', routes.login);
+app.get('/checkUser', routes.checkUser);
 app.post('/printURL', routes.printURL);
 app.post('/addFolder', routes.addFolder);
 app.post('/deleteFolder', routes.deleteFolder);
@@ -41,3 +44,8 @@ app.post('/shareFolder', routes.shareFolder);
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
+
+// var app = express.createServer();
+
+// app.use(express.cookieParser());
+// app.use(express.session({ secret: "keyboard cat" }));

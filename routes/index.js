@@ -12,6 +12,28 @@ exports.index = function(req, res){
   res.render('index', { title: 'Express' });
 };
 
+exports.checkUser = function(req, res){
+  console.log('existing user: ', req.session.user);
+  if (req.session.user==undefined) {
+    res.send('false');
+  } else {
+    res.send('true')};
+};
+
+exports.login = function(req, res){
+  console.log('body: ', req.body);
+  var newUser = new User({'email':req.body.userEmail, 'password':req.body.userPassword});
+  if (req.body.userEmail.length > 0) {
+    newUser.save(function (err) {
+      if (err)
+        return console.log(err);
+    });
+  }
+  req.session.user = newUser;
+  console.log('user ', req.session.user);
+  //var hashedPassword = bcrypt.hashSync('SuperSecretPassword', 10);
+};
+
 exports.deleteFolder = function(req, res) {
   Folder.remove({'_id': req.body.folder}).exec(
     function (err) {

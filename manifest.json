@@ -5,8 +5,12 @@
   "description": "SAMPLE_DESCRIPTION",
   "content_scripts": [
   {
-    "matches": ["http://*/*"],
+    "matches": ["http://www.google.com/robots.txt"],
     "js": ["oauth2_inject.js"]
+  },
+  {
+    "matches": ["http://*/*"],
+    "js": ["jquery.js"]
   }
   ],
 

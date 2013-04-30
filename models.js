@@ -19,7 +19,8 @@ var folderSchema = mongoose.Schema({
 var Folder = mongoose.model('Folder', folderSchema);
 
 var userSchema = mongoose.Schema({
-  name: String
+  email: String,
+  password: String
 });
 
 var User = mongoose.model('User', userSchema);

@@ -34,7 +34,7 @@ var recipeOrganizer = {
           
           if (img2 != undefined)
             img = img2;
-        }oauth2/lib/oauth2.js
+        } //oauth2/lib/oauth2.js
       }
       xhr.send(null);
 
@@ -102,6 +102,43 @@ var recipeOrganizer = {
     }
   },
 
+  seeIfUser: function() {
+    var userExists = new XMLHttpRequest();
+    userExists.open("GET", 'http://localhost:3000/checkUser', false);
+    userExists.send(null);
+    console.log('user exists?:', userExists.responseText);
+    if (userExists.responseText == 'false') {
+      return false;
+    } else {
+      return true;
+    };
+  },
+
+
+  displayLogin: function() {
+    var form = document.createElement('form');
+    form.setAttribute('id', 'loginForm');
+    var email = document.createElement('input');
+    email.setAttribute('type', 'text');
+    email.setAttribute('name', 'userEmail');
+    var password = document.createElement('input');
+    password.setAttribute('type', 'text');
+    password.setAttribute('name', 'userPassword');
+    var submitButton = document.createElement('input');
+    submitButton.setAttribute('type', 'submit');
+    submitButton.setAttribute('value', "Create Account");
+
+    form.appendChild(email);
+    form.appendChild(password);
+    form.appendChild(submitButton);
+    document.body.appendChild(form);
+
+    jQuery('#loginForm').on('submit', function () {
+      jQuery.post("http://localhost:3000/login", jQuery('#loginForm').serialize());
+      return true;
+    });
+  },
+
   displayNewFolder: function() {
     var form = document.createElement('form');
     form.setAttribute('id', 'addFolderForm');
@@ -138,41 +175,51 @@ var recipeOrganizer = {
 // Run our recipe organizer script as soon as the document's DOM is ready.
 document.addEventListener('DOMContentLoaded', function () {
   // recipeOrganizer.callLocalHost();
-  recipeOrganizer.displayFolders();
-  recipeOrganizer.displayNewFolder();
-  recipeOrganizer.displayButton();
+
+  // if (recipeOrganizer.seeIfUser()) {
+  //   recipeOrganizer.displayFolders();
+  //   recipeOrganizer.displayNewFolder();
+  //   recipeOrganizer.displayButton();
+  // } else {
+  //   recipeOrganizer.displayLogin();
+  // }
+
+    recipeOrganizer.displayFolders();
+    recipeOrganizer.displayNewFolder();
+    recipeOrganizer.displayButton();
+  
 });
 
-// var googleAuth = new OAuth2('google', {
-//   client_id: '1049899099134.apps.googleusercontent.com',
-//   client_secret: 'Vu_dfcSLcK1e7cxfHWGsGRhP',
-//   api_scope: 'https://www.googleapis.com/auth/userinfo.email'
-// });
+var googleAuth = new OAuth2('google', {
+  client_id: '1049899099134.apps.googleusercontent.com',
+  client_secret: 'Vu_dfcSLcK1e7cxfHWGsGRhP',
+  api_scope: 'https://www.googleapis.com/auth/userinfo.email'
+});
 
-// console.log(googleAuth.getAccessToken());
+console.log(googleAuth.getAccessToken());
 
-// googleAuth.authorize(function() {
-  // We should now have googleAuth.getAccessToken() returning a valid token value for us 
-  // Create an XMLHttpRequest to get the email address 
-  // console.log("authorizing");
-  // var xhr = new XMLHttpRequest();
-  // xhr.onreadystatechange = function() { 
-  //   if( xhr.readyState == 4 ) {
-  //     if( xhr.status == 200 ) { 
-  //       var parseResult = JSON.parse(xhr.responseText);
-  //       // The email address is located naw: 
-  //       var email = parseResult["email"];
-  //       console.log("email", email)
-  //     }
-  //   }
-  // }
-  // // Open it up as GET, POST didn't work for me for the userinfo 
-  // xhr.open("GET","https://www.googleapis.com/oauth2/v1/userinfo",true);
-  // // Set the content & autherization 
-  // xhr.setRequestHeader('Content-Type', 'application/json');
-  // xhr.setRequestHeader('Authorization', "OAuth " + googleAuth.getAccessToken() );
-  // xhr.send(null);
-  // // Debugging stuff so we can see everything in the xhr.  Do not leave this in production code 
-  // console.log("xhr", xhr);
-//   console.log(googleAuth.getAccessToken());
-// });
+googleAuth.authorize(function() {
+  //We should now have googleAuth.getAccessToken() returning a valid token value for us 
+  //Create an XMLHttpRequest to get the email address 
+  console.log("authorizing");
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() { 
+    if( xhr.readyState == 4 ) {
+      if( xhr.status == 200 ) { 
+        var parseResult = JSON.parse(xhr.responseText);
+        // The email address is located naw: 
+        var email = parseResult["email"];
+        console.log("email", email);
+      }
+    }
+  }
+  // Open it up as GET, POST didn't work for me for the userinfo 
+  xhr.open("GET","https://www.googleapis.com/oauth2/v1/userinfo",true);
+  // Set the content & autherization 
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.setRequestHeader('Authorization', "OAuth " + googleAuth.getAccessToken() );
+  xhr.send(null);
+  // Debugging stuff so we can see everything in the xhr.  Do not leave this in production code 
+  console.log("xhr", xhr);
+  console.log(googleAuth.getAccessToken());
+});
