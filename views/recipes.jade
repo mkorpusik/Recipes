@@ -13,11 +13,22 @@ block content
             input(type="hidden", name="folder", value=folder._id, class="input-small")
             input(type="hidden", name="email", value=email, class="input-small")
             input(type="submit", value="Share Folder", class="shareFolder btn")
-                | Share Folder
-        button(type="submit", name="folder", value=folder._id, class="deleteFolder btn")
-            | Delete Folder
+        form(action="/deleteFolder", method="post", class="form-inline")
+            input(type="hidden", name="userEmail", value=email)
+            input(type="hidden", name="folder", value=folder._id)
+            input(type="submit", value="Delete Folder", class="deleteFolder btn")
         each recipe, i in folder.recipes
           div(class="title-wrapper")
             h4 #{recipe.title}
+            form(action="/removeRecipe", method="post")
+              input(type="hidden", name="recipe", value=recipe._id)
+              input(type="hidden", name="userEmail", value=email)
+              input(type="submit", value="Remove Recipe", class="deleteRecipe btn")
+            form(action="/addNote", method="post")
+              input(type="text-area", name="note")
+              input(type="hidden", name="recipe", value=recipe._id)
+              input(type="hidden", name="userEmail", value=email)
+              input(type='submit', value="Add a Note")
+            h3 #{recipe.notes}
           a(href="#{recipe.url}")
             img(src="#{recipe.img}", width="150px", height="150px")

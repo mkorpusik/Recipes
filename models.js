@@ -4,7 +4,8 @@ mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/myrecipes');
 var recipeSchema = mongoose.Schema({
   url: String,
   title: String,
-  img: String
+  img: String,
+  notes: String
 });
 
 var Recipe = mongoose.model('Recipe', recipeSchema);

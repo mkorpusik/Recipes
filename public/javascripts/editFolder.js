@@ -1,20 +1,20 @@
-$(document).ready(function (){
+// $(document).ready(function (){
 
-  //use click and event targets for buttons
-  $('.deleteFolder').click(function (event) {
-     //remember to check your browser console!
-  	 console.log('deleting folder');
-  	 var target = event.target;
-  	 console.log(target.value);
-     $.post("/deleteFolder", {"folder":target.value}, 
-        // remember send a response!
-        function(response) {
-          console.log(response);
-          $('#'+target.value).remove();
-        });
+//   //use click and event targets for buttons
+//   $('.deleteFolder').click(function (event) {
+//      //remember to check your browser console!
+//   	 console.log('deleting folder');
+//   	 var target = event.target;
+//   	 console.log(target.value);
+//      $.post("/deleteFolder", {"folder":target.value}, 
+//         // remember send a response!
+//         function(response) {
+//           console.log(response);
+//           $('#'+target.value).remove();
+//         });
      
-    return false;
-  });
+//     return false;
+//   });
 
   // //use click and event targets for buttons
   // $('.shareFolder').click(function (event) {
@@ -34,4 +34,4 @@ $(document).ready(function (){
 
   
   
-});
+// });

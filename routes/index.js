@@ -9,7 +9,7 @@ var Folder = models.Folder;
 var User = models.User;
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Express' });
+  res.render('recipes', { folders: [], email: "", title: 'Recipes'});
 };
 
 exports.checkUser = function(req, res){
@@ -34,13 +34,31 @@ exports.login = function(req, res){
   //var hashedPassword = bcrypt.hashSync('SuperSecretPassword', 10);
 };
 
-exports.deleteFolder = function(req, res) {
-  Folder.remove({'_id': req.body.folder}).exec(
-    function (err) {
-      if (err) return handleError(err);
-      // remember to send the response!
-      res.send('check');
+exports.removeRecipe = function(req, res) {
+  console.log(req.body);
+  Recipe.remove({'_id': req.body.recipe}).exec(
+    function (err, docs) {
+      if (err) console.log(err);
+      res.redirect('/recipes/:'+req.body.userEmail);
   });
+}
+
+exports.deleteFolder = function(req, res) {
+  console.log(req.body);
+  Folder.findOne({'_id': req.body.folder}).exec(
+    function (err, docs) {
+      if (err) console.log(err);
+      var current_owners = docs.owners;
+      var owner_index = current_owners.indexOf(req.body.userEmail);
+      current_owners.splice(owner_index, 1);
+      docs.owners = current_owners;
+      docs.save(function(err){
+        if(err)
+          console.log("Unable to remove your email from folder");
+      // remember to send the response!
+      res.redirect('/recipes/:'+req.body.userEmail);
+  });
+});
 }
 
 exports.shareFolder = function(req, res) {
@@ -53,6 +71,23 @@ exports.shareFolder = function(req, res) {
       docs.save(function(err){
         if(err)
           console.log("Unable to add friend to folder");
+        res.redirect('/recipes/:'+req.body.email);
+        }
+      );
+    });
+}
+
+exports.addNote = function(req, res) {
+    var currentRecipe = Recipe.findOne({'_id': req.body.recipe}).exec(function (err, docs){
+      if(err)
+        console.log("Unable to find recipe");
+      var current_notes = docs.notes;
+      current_notes.concat(req.body.note);
+      current_notes.concat('\n');
+      docs.notes = current_notes;
+      docs.save(function(err){
+        if(err)
+          console.log("Unable to add note to recipe");
         res.redirect('/recipes/:'+req.body.email);
         }
       );
