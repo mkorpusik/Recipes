@@ -82,13 +82,13 @@ exports.addNote = function(req, res) {
       if(err)
         console.log("Unable to find recipe");
       var current_notes = docs.notes;
-      current_notes.concat(req.body.note);
-      current_notes.concat('\n');
+      current_notes.push(req.body.note);
+      console.log('current notes', current_notes);
       docs.notes = current_notes;
       docs.save(function(err){
         if(err)
           console.log("Unable to add note to recipe");
-        res.redirect('/recipes/:'+req.body.email);
+        res.redirect('/recipes/:'+req.body.userEmail);
         }
       );
     });
@@ -144,7 +144,7 @@ exports.printURL = function(req, res){
   // console.log("results", img);
 
   // add to mongoose db
-  var recipe = new Recipe({ url: url, title:title, img:img});
+  var recipe = new Recipe({ url: url, title:title, img:img, notes:[]});
   recipe.save(function (err) {
     if (err)
       return console.log(err);

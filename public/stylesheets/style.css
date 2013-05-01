@@ -27,3 +27,7 @@ a {
 .title-wrapper{
 	overflow:hidden;
 }
+
+.recipe-card{
+	border: 5px solid;
+}

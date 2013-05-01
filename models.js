@@ -5,7 +5,7 @@ var recipeSchema = mongoose.Schema({
   url: String,
   title: String,
   img: String,
-  notes: String
+  notes: [String]
 });
 
 var Recipe = mongoose.model('Recipe', recipeSchema);
