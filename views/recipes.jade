@@ -20,7 +20,7 @@ block content
                     a(href='/recipes/:'+email+'/:'+liFolder._id) #{liFolder.title}                
 
   div(id=folder._id, class="folder")
-    h3 #{folder.title} 
+    h1 #{folder.title} 
     h4 shared with #{folder.owners}
     form(action="/shareFolder", method="post", class="form-inline")
         input(type="text", name="sharer", placeholder="Friend's Email")
