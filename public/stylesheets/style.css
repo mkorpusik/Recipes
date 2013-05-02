@@ -15,21 +15,12 @@ a {
 	display:inline-block;
 	float:left;
 	text-align: center;
-	overflow:hidden;
-}
-
-.wrapper{
-	width: 12000px;
-	overflow: auto;
-	float:left;
-}
-
-.title-wrapper{
-	overflow:hidden;
 }
 
 .recipe-card{
 	border: 5px solid;
 	padding: 20px;
 	margin: 10px;
+	display: inline-block;
+	vertical-align: top;
 }

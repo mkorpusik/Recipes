@@ -36,16 +36,18 @@ exports.login = function(req, res){
 
 exports.removeRecipe = function(req, res) {
   console.log(req.body);
+  var folderID = req.body.folder;
   Recipe.remove({'_id': req.body.recipe}).exec(
     function (err, docs) {
       if (err) console.log(err);
-      res.redirect('/recipes/:'+req.body.userEmail);
+      res.redirect('/recipes/:'+req.body.userEmail+'/:'+folderID);
   });
 }
 
 exports.deleteFolder = function(req, res) {
   console.log(req.body);
-  Folder.findOne({'_id': req.body.folder}).exec(
+  var folderID = req.body.folder;
+  Folder.findOne({'_id': folderID}).exec(
     function (err, docs) {
       if (err) console.log(err);
       var current_owners = docs.owners;
@@ -56,13 +58,14 @@ exports.deleteFolder = function(req, res) {
         if(err)
           console.log("Unable to remove your email from folder");
       // remember to send the response!
-      res.redirect('/recipes/:'+req.body.userEmail);
+      res.redirect('/recipes/:'+req.body.userEmail+'/:'+folderID);
   });
 });
 }
 
 exports.shareFolder = function(req, res) {
-    var currentFolder = Folder.findOne({'_id': req.body.folder}).exec(function (err, docs){
+    var folderID = req.body.folder;
+    var currentFolder = Folder.findOne({'_id': folderID}).exec(function (err, docs){
       if(err)
         console.log("Unable to find folder");
       var current_owners = docs.owners;
@@ -71,13 +74,14 @@ exports.shareFolder = function(req, res) {
       docs.save(function(err){
         if(err)
           console.log("Unable to add friend to folder");
-        res.redirect('/recipes/:'+req.body.email);
+        res.redirect('/recipes/:'+req.body.email+'/:'+folderID);
         }
       );
     });
 }
 
 exports.addNote = function(req, res) {
+    var folderID = req.body.folder;
     var currentRecipe = Recipe.findOne({'_id': req.body.recipe}).exec(function (err, docs){
       if(err)
         console.log("Unable to find recipe");
@@ -88,7 +92,7 @@ exports.addNote = function(req, res) {
       docs.save(function(err){
         if(err)
           console.log("Unable to add note to recipe");
-        res.redirect('/recipes/:'+req.body.userEmail);
+        res.redirect('/recipes/:'+req.body.userEmail+'/:'+folderID);
         }
       );
     });
