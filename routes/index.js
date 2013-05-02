@@ -115,7 +115,29 @@ exports.recipes = function(req, res){
   console.log("email in recipes route", email);
   var folders =  Folder.find({owners: email}).sort('title').populate('recipes').exec(function (err, docs) {
   	// console.log(docs);
-  	res.render('recipes', { folders:docs, email:email, title: 'Recipes' });
+    if (docs.length > 0) {
+      var folder = docs[0];
+      res.render('recipes', { folders:docs, email:email, folder:folder, title: 'Recipes' });
+    }
+    else {
+      res.render('index', {email:email, title:'Recipes'});
+    }
+  });
+};
+
+exports.recipesFolder = function(req, res){
+  // get all recipes from mongo and display on recipes page
+  var email = req.params.email.slice(1);
+  var folderID = req.params.folderID.slice(1);
+  console.log("folder ID", folderID);
+  console.log("email in recipes route", email);
+  var folders =  Folder.find({owners: email}).sort('title').populate('recipes').exec(function (err, docs) {
+    // console.log(docs);
+    var currentFolder = Folder.findOne({'_id': folderID}).populate('recipes').exec(function (err, docs2){
+      if(err)
+        console.log("Unable to find folder");
+      res.render('recipes', { folders:docs, email:email, folder:docs2, title: 'Recipes' });
+    });
   });
 };
 
