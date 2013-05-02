@@ -58,7 +58,7 @@ exports.deleteFolder = function(req, res) {
         if(err)
           console.log("Unable to remove your email from folder");
       // remember to send the response!
-      res.redirect('/recipes/:'+req.body.userEmail+'/:'+folderID);
+      res.redirect('/recipes/:'+req.body.userEmail);
   });
 });
 }

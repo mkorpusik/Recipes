@@ -11,9 +11,13 @@ block content
           a(href='/recipes/:'+email).brand #{title}
           .nav-collapse.collapse
             ul.nav
-              each folder, i in folders
-                li
-                  a(href='/recipes/:'+email+'/:'+folder._id) #{folder.title}
+              each liFolder, i in folders
+                -if(liFolder._id.toString()==folder._id.toString())  
+                  li.active
+                    a(href='/recipes/:'+email+'/:'+liFolder._id) #{liFolder.title}
+                -else  
+                  li
+                    a(href='/recipes/:'+email+'/:'+liFolder._id) #{liFolder.title}                
 
   div(id=folder._id, class="folder")
     h3 #{folder.title} 
