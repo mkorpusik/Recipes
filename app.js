@@ -36,7 +36,7 @@ app.get('/recipes/:email/:folderID', routes.recipesFolder);
 app.get('/folders/:email', routes.folders);
 app.post('/login', routes.login);
 app.get('/checkUser', routes.checkUser);
-app.post('/printURL', routes.printURL);
+app.post('/addRecipe', routes.addRecipe);
 app.post('/addFolder', routes.addFolder);
 app.post('/deleteFolder', routes.deleteFolder);
 app.post('/shareFolder', routes.shareFolder);
@@ -46,8 +46,3 @@ app.post('/addNote', routes.addNote)
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
-
-// var app = express.createServer();
-
-// app.use(express.cookieParser());
-// app.use(express.session({ secret: "keyboard cat" }));

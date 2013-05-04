@@ -8,10 +8,8 @@ var recipeOrganizer = {
   */
   callLocalHost: function(folderName) {
     chrome.tabs.query({active:true, currentWindow:true},function(tab){
-      // console.log("tabs",tab);
       url = tab[0].url;
       title = tab[0].title;
-      // img = "icon2.png";
       img = "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTkxN2BmcHpPHvSrCeruiURn9fT66lA17GldKluG_Jol9zMMj4q";
       console.log(tab[0]);
       var xhr = new XMLHttpRequest();
@@ -35,15 +33,16 @@ var recipeOrganizer = {
           
           if (img2 != undefined)
             img = img2;
-        } //oauth2/lib/oauth2.js
+        } 
       }
       xhr.send(null);
 
       var req = new XMLHttpRequest();
-      req.open("POST", 'http://localhost:3000/printURL', true);
+      req.open("POST", 'http://localhost:3000/addRecipe', true);
       req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      // var url = 'test'
       req.send('url='+url+'&folder='+folderName+'&title='+title+'&img='+img);
+      // alert the user that the recipe has been added to mongodb
+      alert("Your recipe was saved!");
     });
   },
 
@@ -70,7 +69,6 @@ var recipeOrganizer = {
     folderNames.open("GET", 'http://localhost:3000/folders/:'+usrEmail, false);
     folderNames.send(null);
     var folders = this.parseDOMString(folderNames.responseText);
-    // var folders = ['Desserts', 'Appetizers', 'Dinner', 'Party'];
     for (var i = 0; i < folders.length; i++) {
       // add wrapper div
       var folder = document.createElement('div');
@@ -78,13 +76,8 @@ var recipeOrganizer = {
       document.body.appendChild(folder);
 
       // add folder icon 
-      // var img = document.createElement('img');
-      // img.src = 'folder.png';
-      // img.setAttribute('alt', folders[i]);
       var btn = document.createElement('BUTTON');
       btn.setAttribute('id', folders[i]);
-      // btn.style.backgroundImage = "url('/folder.png')";
-      // btn.style.backgroundColor = 'transparent';
       btn.style.backgroundImage = 'url("public/folder.png")';
       btn.style.backgroundRepeat = 'no-repeat';
       btn.style.backgroundSize = '35px 35px';
@@ -116,30 +109,6 @@ var recipeOrganizer = {
     };
   },
 
-
-  // displayLogin: function() {
-  //   var form = document.createElement('form');
-  //   form.setAttribute('id', 'loginForm');
-  //   var email = document.createElement('input');
-  //   email.setAttribute('type', 'text');
-  //   email.setAttribute('name', 'userEmail');
-  //   var password = document.createElement('input');
-  //   password.setAttribute('type', 'text');
-  //   password.setAttribute('name', 'userPassword');
-  //   var submitButton = document.createElement('input');
-  //   submitButton.setAttribute('type', 'submit');
-  //   submitButton.setAttribute('value', "Create Account");
-
-  //   form.appendChild(email);
-  //   form.appendChild(password);
-  //   form.appendChild(submitButton);
-  //   document.body.appendChild(form);
-
-  //   jQuery('#loginForm').on('submit', function () {
-  //     jQuery.post("http://localhost:3000/login", jQuery('#loginForm').serialize());
-  //     return true;
-  //   });
-  // },
 
   displayNewFolder: function(usrEmail) {
     var form = document.createElement('form');

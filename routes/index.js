@@ -1,6 +1,6 @@
 
 /*
- * GET home page.
+ * GET and POST requests.
  */
 
 var models = require('../models');
@@ -31,7 +31,6 @@ exports.login = function(req, res){
   }
   req.session.user = newUser;
   console.log('user ', req.session.user);
-  //var hashedPassword = bcrypt.hashSync('SuperSecretPassword', 10);
 };
 
 exports.removeRecipe = function(req, res) {
@@ -108,9 +107,6 @@ exports.addFolder = function(req, res){
         return console.log(err);
     });
   }
-  // window.location.reload();
-  // window.location.href = "popup.html";
-  // chrome.browserAction.setPopup({popup: "popup.html"});
 };
 
 exports.recipes = function(req, res){
@@ -118,7 +114,6 @@ exports.recipes = function(req, res){
   var email = req.params.email.slice(1);
   console.log("email in recipes route", email);
   var folders =  Folder.find({owners: email}).sort('title').populate('recipes').exec(function (err, docs) {
-  	// console.log(docs);
     if (docs.length > 0) {
       var folder = docs[0];
       res.render('recipes', { folders:docs, email:email, folder:folder, title: 'Recipes' });
@@ -136,7 +131,6 @@ exports.recipesFolder = function(req, res){
   console.log("folder ID", folderID);
   console.log("email in recipes route", email);
   var folders =  Folder.find({owners: email}).sort('title').populate('recipes').exec(function (err, docs) {
-    // console.log(docs);
     var currentFolder = Folder.findOne({'_id': folderID}).populate('recipes').exec(function (err, docs2){
       if(err)
         console.log("Unable to find folder");
@@ -157,7 +151,7 @@ exports.folders = function(req, res){
   });
 };
 
-exports.printURL = function(req, res){
+exports.addRecipe = function(req, res){
   // create new recipe using URL of current window and save to mongodb
   var url = req.body.url;
   var folder = req.body.folder;
@@ -165,9 +159,6 @@ exports.printURL = function(req, res){
   var img = req.body.img;
   console.log('url', url);
   console.log('folder', folder);
-  // results = jQuery('#imgPhoto');
-  // img = results.src;
-  // console.log("results", img);
 
   // add to mongoose db
   var recipe = new Recipe({ url: url, title:title, img:img, notes:[]});
