@@ -34,7 +34,6 @@ app.get('/users', user.list);
 app.get('/recipes/:email', routes.recipes);
 app.get('/recipes/:email/:folderID', routes.recipesFolder);
 app.get('/folders/:email', routes.folders);
-app.post('/login', routes.login);
 app.get('/checkUser', routes.checkUser);
 app.post('/addRecipe', routes.addRecipe);
 app.post('/addFolder', routes.addFolder);

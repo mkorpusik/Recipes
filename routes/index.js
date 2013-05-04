@@ -23,22 +23,6 @@ exports.checkUser = function(req, res){
     res.send('true')};
 };
 
-// /**
-//   * Creates a new user using email and password.
-//   */
-// exports.login = function(req, res){
-//   console.log('body: ', req.body);
-//   var newUser = new User({'email':req.body.userEmail, 'password':req.body.userPassword});
-//   if (req.body.userEmail.length > 0) {
-//     newUser.save(function (err) {
-//       if (err)
-//         return console.log(err);
-//     });
-//   }
-//   req.session.user = newUser;
-//   console.log('user ', req.session.user);
-// };
-
 /**
   * Remove the given recipe from mongo.
   */
