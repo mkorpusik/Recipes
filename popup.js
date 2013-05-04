@@ -10,6 +10,7 @@ var recipeOrganizer = {
     chrome.tabs.query({active:true, currentWindow:true},function(tab){
       url = tab[0].url;
       title = tab[0].title;
+      // default image is fork and knife icon
       img = "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTkxN2BmcHpPHvSrCeruiURn9fT66lA17GldKluG_Jol9zMMj4q";
       console.log(tab[0]);
       var xhr = new XMLHttpRequest();
@@ -20,11 +21,13 @@ var recipeOrganizer = {
           var page = $('<div>').html(xhr.responseText)[0];
           var img2 = undefined;
 
+          // scrape allrecipes for image and title
           if (url.match("allrecipes.com")){
             console.log("all recipes");
             img2 = $("#imgPhoto", page).attr("src");
             console.log(img2);
           }
+          // scrape epicurious for image and title
           else if (url.match("epicurious.com")) {
             console.log("epicurious");
             img2 = "http://www.epicurious.com"+$(".photo", page).attr('src');
@@ -46,6 +49,9 @@ var recipeOrganizer = {
     });
   },
 
+  /**
+  * Parses the string list of folders and returns an actual list of folders.
+  */
   parseDOMString: function(responseText) {
     var folderList = [];
     responseText = responseText.split('"');
@@ -97,6 +103,9 @@ var recipeOrganizer = {
     }
   },
 
+  /**
+  * Returns whether or not the user exists already in mongo.
+  */
   seeIfUser: function() {
     var userExists = new XMLHttpRequest();
     userExists.open("GET", 'http://localhost:3000/checkUser', false);
@@ -109,7 +118,9 @@ var recipeOrganizer = {
     };
   },
 
-
+  /**
+  * Saves a new folder to mongo and displays it in the popup.
+  */
   displayNewFolder: function(usrEmail) {
     var form = document.createElement('form');
     form.setAttribute('id', 'addFolderForm');
@@ -141,7 +152,6 @@ var recipeOrganizer = {
   */
   displayButton: function(usrEmail) {
     var button = document.createElement('BUTTON');
-    // button.setAttribute('class', 'btn');
     button.innerHTML = 'See Recipes';
     button.onclick = function() {
       chrome.tabs.create({ url: 'http://localhost:3000/recipes/:'+usrEmail });
@@ -150,8 +160,11 @@ var recipeOrganizer = {
   }
 };
 
-// Run our recipe organizer script as soon as the document's DOM is ready.
+/**
+  * Run our recipe organizer script as soon as the document's DOM is ready.
+  */
 document.addEventListener('DOMContentLoaded', function () {
+  //Create an XMLHttpRequest to get the email address
   var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() { 
       if( xhr.readyState == 4 ) {
@@ -183,6 +196,9 @@ document.addEventListener('DOMContentLoaded', function () {
     
 });
 
+/**
+  * Use Google OAuth2 to sign the user in and access her email address.
+  */
 var googleAuth = new OAuth2('google', {
   client_id: '1049899099134.apps.googleusercontent.com',
   client_secret: 'Vu_dfcSLcK1e7cxfHWGsGRhP',
@@ -191,30 +207,5 @@ var googleAuth = new OAuth2('google', {
 });
 
 googleAuth.authorize(function() {
-    //We should now have googleAuth.getAccessToken() returning a valid token value for us 
-    //Create an XMLHttpRequest to get the email address 
-    console.log("authorizing");
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() { 
-      if( xhr.readyState == 4 ) {
-        if( xhr.status == 200 ) { 
-          var parseResult = JSON.parse(xhr.responseText);
-          // The email address is located naw: 
-          usrEmail = parseResult["email"];
-          // console.log("email", usrEmail);
-          // recipeOrganizer.displayFolders(usrEmail);
-          // recipeOrganizer.displayNewFolder(usrEmail);
-          // recipeOrganizer.displayButton(usrEmail);
-        }
-      }
-    }
-    // Open it up as GET, POST didn't work for me for the userinfo 
-    xhr.open("GET","https://www.googleapis.com/oauth2/v1/userinfo",true);
-    // Set the content & autherization 
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('Authorization', "OAuth " + googleAuth.getAccessToken() );
-    xhr.send(null);
-    // Debugging stuff so we can see everything in the xhr.  Do not leave this in production code 
-    console.log("xhr", xhr);
-    console.log(googleAuth.getAccessToken());
-  });
+  console.log("authorizing");
+});

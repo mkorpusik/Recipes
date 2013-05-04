@@ -12,6 +12,9 @@ exports.index = function(req, res){
   res.render('recipes', { folders: [], email: "", title: 'Recipes'});
 };
 
+/**
+  * Checks whether the user is undefined, and returns a string of true or false.
+  */
 exports.checkUser = function(req, res){
   console.log('existing user: ', req.session.user);
   if (req.session.user==undefined) {
@@ -20,19 +23,25 @@ exports.checkUser = function(req, res){
     res.send('true')};
 };
 
-exports.login = function(req, res){
-  console.log('body: ', req.body);
-  var newUser = new User({'email':req.body.userEmail, 'password':req.body.userPassword});
-  if (req.body.userEmail.length > 0) {
-    newUser.save(function (err) {
-      if (err)
-        return console.log(err);
-    });
-  }
-  req.session.user = newUser;
-  console.log('user ', req.session.user);
-};
+// /**
+//   * Creates a new user using email and password.
+//   */
+// exports.login = function(req, res){
+//   console.log('body: ', req.body);
+//   var newUser = new User({'email':req.body.userEmail, 'password':req.body.userPassword});
+//   if (req.body.userEmail.length > 0) {
+//     newUser.save(function (err) {
+//       if (err)
+//         return console.log(err);
+//     });
+//   }
+//   req.session.user = newUser;
+//   console.log('user ', req.session.user);
+// };
 
+/**
+  * Remove the given recipe from mongo.
+  */
 exports.removeRecipe = function(req, res) {
   console.log(req.body);
   var folderID = req.body.folder;
@@ -43,6 +52,9 @@ exports.removeRecipe = function(req, res) {
   });
 }
 
+/**
+  * Remove the given folder from mongo.
+  */
 exports.deleteFolder = function(req, res) {
   console.log(req.body);
   var folderID = req.body.folder;
@@ -62,6 +74,9 @@ exports.deleteFolder = function(req, res) {
 });
 }
 
+/**
+  * Add a friend's email to the owners field of the given folder.
+  */
 exports.shareFolder = function(req, res) {
     var folderID = req.body.folder;
     var currentFolder = Folder.findOne({'_id': folderID}).exec(function (err, docs){
@@ -79,6 +94,9 @@ exports.shareFolder = function(req, res) {
     });
 }
 
+/**
+  * Add a note to the given folder.
+  */
 exports.addNote = function(req, res) {
     var folderID = req.body.folder;
     var currentRecipe = Recipe.findOne({'_id': req.body.recipe}).exec(function (err, docs){
@@ -97,6 +115,9 @@ exports.addNote = function(req, res) {
     });
 }
 
+/**
+  * Add a new folder to mongo.
+  */
 exports.addFolder = function(req, res){
   var folderName = req.body.newFolderName;
   var userEmail = req.body.userEmail;
@@ -109,6 +130,9 @@ exports.addFolder = function(req, res){
   }
 };
 
+/**
+  * Render recipes page with first folder found in mongo, or if no folders exist, renders index page.
+  */
 exports.recipes = function(req, res){
   // get all recipes from mongo and display on recipes page
   var email = req.params.email.slice(1);
@@ -124,6 +148,9 @@ exports.recipes = function(req, res){
   });
 };
 
+/**
+  * Render recipes page with associated folder.
+  */
 exports.recipesFolder = function(req, res){
   // get all recipes from mongo and display on recipes page
   var email = req.params.email.slice(1);
@@ -151,6 +178,9 @@ exports.folders = function(req, res){
   });
 };
 
+/**
+  * Add a new recipe to mongo.
+  */
 exports.addRecipe = function(req, res){
   // create new recipe using URL of current window and save to mongodb
   var url = req.body.url;
