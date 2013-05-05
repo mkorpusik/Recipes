@@ -9,7 +9,7 @@ var Folder = models.Folder;
 var User = models.User;
 
 exports.index = function(req, res){
-  res.render('recipes', { folders: [], email: "", title: 'Recipes'});
+  res.render('index2', { folders: [], email: "", title: 'Recipes'});
 };
 
 /**
