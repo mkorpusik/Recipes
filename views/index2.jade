@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  .navbar.navbar-inverse.navbar-fixed-top
+      .navbar-inner
+        .container
+          button.btn.btn-navbar(type='button', data-toggle='collapse', data-target='.nav-collapse')
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.brand #{title}
+          .nav-collapse.collapse
+  div
+    h2 #{title} 
+    h4 Welcome to #{title}. Please download the recipes chrome extension.
