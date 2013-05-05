@@ -36,8 +36,9 @@ block content
         div(class="recipe-card")
           div(class="title-wrapper")
             h4 #{recipe.title}
-          a(href="#{recipe.url}")
-            img(src="#{recipe.img}", width="150px", height="150px")
+          div(style="height:150px")
+            a(href="#{recipe.url}")
+              img(src="#{recipe.img}", width="150px", height="150px")
           ul
             h3= "Notes"
             div(class="notes-wrapper")

@@ -14,7 +14,8 @@ var recipeOrganizer = {
       url = tab[0].url;
       title = tab[0].title;
       // default image is fork and knife icon
-      img = "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTkxN2BmcHpPHvSrCeruiURn9fT66lA17GldKluG_Jol9zMMj4q";
+      img = "http://www.bihardays.com/wp-content/uploads/2011/09/empty-plate.jpg";
+      // img = "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTkxN2BmcHpPHvSrCeruiURn9fT66lA17GldKluG_Jol9zMMj4q";
       console.log(tab[0]);
       var xhr = new XMLHttpRequest();
       xhr.open("GET", url, false);
