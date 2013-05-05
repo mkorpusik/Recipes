@@ -6,7 +6,10 @@ var recipeOrganizer = {
   /**
   * Gets the window's current URL and POSTs it to localhost's printURL route.
   */
-  callLocalHost: function(folderName) {
+  callLocalHost: function(folderID, btn) {
+    // change button's background image
+    btn.style.backgroundImage = 'url("public/folderBlueGrey.png")';
+
     chrome.tabs.query({active:true, currentWindow:true},function(tab){
       url = tab[0].url;
       title = tab[0].title;
@@ -43,9 +46,11 @@ var recipeOrganizer = {
       var req = new XMLHttpRequest();
       req.open("POST", 'http://localhost:3000/addRecipe', true);
       req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      req.send('url='+url+'&folder='+folderName+'&title='+title+'&img='+img);
-      // alert the user that the recipe has been added to mongodb
-      alert("Your recipe was saved!");
+      req.send('url='+url+'&folder='+folderID+'&title='+title+'&img='+img);
+
+      // after 1 sec, change button's background image back to normal
+      var myVar=setInterval(function(){btn.style.backgroundImage = 'url("public/folder.png")';},1000);
+      
     });
   },
 
@@ -91,7 +96,7 @@ var recipeOrganizer = {
       btn.style.width = '40px';
       btn.style.display = 'inline-block';
       btn.onclick = function() {
-        recipeOrganizer.callLocalHost(this.id);
+        recipeOrganizer.callLocalHost(this.id, this);
       };
       document.getElementById(folders[i]).appendChild(btn);
 

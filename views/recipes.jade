@@ -21,34 +21,37 @@ block content
 
   div(id=folder._id, class="folder")
     h1 #{folder.title} 
-    h4 shared with #{folder.owners}
-    form(action="/shareFolder", method="post", class="form-inline")
-        input(type="text", name="sharer", placeholder="Friend's Email")
-        input(type="hidden", name="folder", value=folder._id, class="input-small")
-        input(type="hidden", name="email", value=email, class="input-small")
-        input(type="submit", value="Share Folder", class="shareFolder btn")
     form(action="/deleteFolder", method="post", class="form-inline")
         input(type="hidden", name="userEmail", value=email)
         input(type="hidden", name="folder", value=folder._id)
-        input(type="submit", value="Delete Folder", class="deleteFolder btn")
-    each recipe, i in folder.recipes
-      div(class="recipe-card")
-        h4 #{recipe.title}
-        a(href="#{recipe.url}")
-          img(src="#{recipe.img}", width="150px", height="150px")
-        ul
-          h3= "Notes"
-          each note, i in recipe.notes
-            li
-              h4(style="text-align: left") #{note}
-        form(action="/addNote", method="post", class="form-inline")
-          input(type="text", placeholder="Note", name="note")
-          input(type="hidden", name="recipe", value=recipe._id)
-          input(type="hidden", name="userEmail", value=email)
-          input(type="hidden", name="folder", value=folder._id)
-          input(type='submit', value="Add a Note", class="addNote btn")
-        form(action="/removeRecipe", method="post", class="form-inline")
-          input(type="hidden", name="recipe", value=recipe._id)
-          input(type="hidden", name="userEmail", value=email)
-          input(type="hidden", name="folder", value=folder._id)
-          input(type="submit", value="Remove Recipe", class="deleteRecipe btn")
+        input(type="submit", value="Delete Folder", class="deleteFolder btn", style="margin:5px")
+    h4 shared with #{folder.owners}
+    form(action="/shareFolder", method="post", class="form-inline")
+        input(type="text", name="sharer", placeholder="Friend's Email", style="margin:5px")
+        input(type="hidden", name="folder", value=folder._id, class="input-small")
+        input(type="hidden", name="email", value=email, class="input-small")
+        input(type="submit", value="Share Folder", class="shareFolder btn")
+    div(class="recipes-wrapper")
+      each recipe, i in folder.recipes
+        div(class="recipe-card")
+          div(class="title-wrapper")
+            h4 #{recipe.title}
+          a(href="#{recipe.url}")
+            img(src="#{recipe.img}", width="150px", height="150px")
+          ul
+            h3= "Notes"
+            div(class="notes-wrapper")
+              each note, i in recipe.notes
+                li
+                  h4(style="text-align: left") #{note}
+          form(action="/addNote", method="post", class="form-inline")
+            input(type="text", placeholder="Note", name="note")
+            input(type="hidden", name="recipe", value=recipe._id)
+            input(type="hidden", name="userEmail", value=email)
+            input(type="hidden", name="folder", value=folder._id)
+            input(type='submit', value="Add a Note", class="addNote btn")
+          form(action="/removeRecipe", method="post", class="form-inline")
+            input(type="hidden", name="recipe", value=recipe._id)
+            input(type="hidden", name="userEmail", value=email)
+            input(type="hidden", name="folder", value=folder._id)
+            input(type="submit", value="Remove Recipe", class="deleteRecipe btn")

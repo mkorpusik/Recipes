@@ -180,11 +180,15 @@ exports.addRecipe = function(req, res){
     if (err)
       return console.log(err);
 
-    var currentFolder = Folder.findOne({title: folder}).exec(function (err, docs){
+    var currentFolder = Folder.findOne({title: folder}).populate('recipes').exec(function (err, docs){
       if(err)
         console.log("Unable to find folder");
       var current_recipes = docs.recipes;
       current_recipes.push(recipe);
+      // sort recipes alphabetically
+      // console.log('unsorted recipes', current_recipes);
+      // current_recipes.sort();
+      // console.log('sorted recipes', current_recipes);
       docs.recipes = current_recipes;
       docs.save(function(err){
         if(err)
