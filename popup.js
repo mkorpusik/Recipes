@@ -37,6 +37,12 @@ var recipeOrganizer = {
             img2 = "http://www.epicurious.com"+$(".photo", page).attr('src');
             console.log(img2);
           }
+          // scrape epicurious for image and title
+          else if (url.match("foodnetwork.com")) {
+            console.log("foodnetwork");
+            img2 = $("#recipe-image", page).attr('href');
+            console.log(img2);
+          }
           
           if (img2 != undefined)
             img = img2;
