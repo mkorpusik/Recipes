@@ -29,7 +29,7 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-app.get('/', routes.index);
+app.get('/', routes.recipes);
 app.get('/users', user.list);
 app.get('/recipes/:email', routes.recipes);
 app.get('/recipes/:email/:folderID', routes.recipesFolder);

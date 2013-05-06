@@ -6,7 +6,7 @@ var recipeOrganizer = {
   /**
   * Gets the window's current URL and POSTs it to localhost's printURL route.
   */
-  callLocalHost: function(folderID, btn) {
+  saveRecipe: function(folderID, btn) {
     // change button's background image
     btn.style.backgroundImage = 'url("public/folderBlueGrey.png")';
 
@@ -45,7 +45,7 @@ var recipeOrganizer = {
       xhr.send(null);
 
       var req = new XMLHttpRequest();
-      req.open("POST", 'http://localhost:3000/addRecipe', true);
+      req.open("POST", 'http://myrecipebox.herokuapp.com/addRecipe', true);
       req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       req.send('url='+url+'&folder='+folderID+'&title='+title+'&img='+img);
 
@@ -78,7 +78,7 @@ var recipeOrganizer = {
 
     // get folder names from mongo db by GETting from local host
     var folderNames = new XMLHttpRequest();
-    folderNames.open("GET", 'http://localhost:3000/folders/:'+usrEmail, false);
+    folderNames.open("GET", 'http://myrecipebox.herokuapp.com/folders/:'+usrEmail, false);
     folderNames.send(null);
     var folders = this.parseDOMString(folderNames.responseText);
     for (var i = 0; i < folders.length; i++) {
@@ -97,7 +97,7 @@ var recipeOrganizer = {
       btn.style.width = '40px';
       btn.style.display = 'inline-block';
       btn.onclick = function() {
-        recipeOrganizer.callLocalHost(this.id, this);
+        recipeOrganizer.saveRecipe(this.id, this);
       };
       document.getElementById(folders[i]).appendChild(btn);
 
@@ -114,7 +114,7 @@ var recipeOrganizer = {
   */
   seeIfUser: function() {
     var userExists = new XMLHttpRequest();
-    userExists.open("GET", 'http://localhost:3000/checkUser', false);
+    userExists.open("GET", 'http://myrecipebox.herokuapp.com/checkUser', false);
     userExists.send(null);
     console.log('user exists?:', userExists.responseText);
     if (userExists.responseText == 'false') {
@@ -147,7 +147,7 @@ var recipeOrganizer = {
     document.body.appendChild(form);
 
     jQuery('#addFolderForm').on('submit', function () {
-      jQuery.post("http://localhost:3000/addFolder", jQuery('#addFolderForm').serialize());
+      jQuery.post("http://myrecipebox.herokuapp.com/addFolder", jQuery('#addFolderForm').serialize());
       return true;
     });
     
@@ -160,7 +160,7 @@ var recipeOrganizer = {
     var button = document.createElement('BUTTON');
     button.innerHTML = 'See Recipes';
     button.onclick = function() {
-      chrome.tabs.create({ url: 'http://localhost:3000/recipes/:'+usrEmail });
+      chrome.tabs.create({ url: 'http://myrecipebox.herokuapp.com/recipes/:'+usrEmail });
     };
     document.body.appendChild(button);
   }
