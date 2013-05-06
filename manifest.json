@@ -10,7 +10,7 @@
     "run_at": "document_start"
   },
   {
-    "matches": ["http://*/*", "https://*", "http://*"],
+    "matches": ["http://*/*"],
     "js": ["jquery.js"]
   }
   ],
