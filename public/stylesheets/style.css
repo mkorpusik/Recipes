@@ -17,6 +17,8 @@ a {
 .recipe-card{
 	border: 5px solid;
 	padding: 20px;
+	padding-top: 10px;
+	padding-bottom: 5px;
 	margin: 10px;
 	display: inline-block;
 	float:left;
