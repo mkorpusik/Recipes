@@ -1,8 +1,8 @@
 {
-  "name": "SAMPLE_NAME",
+  "name": "My Recipe Box",
   "version": "0.1",
   "manifest_version" : 2,
-  "description": "SAMPLE_DESCRIPTION",
+  "description": "An online recipe organizer that allows you to share your recipe folders with friends!",
   "content_scripts": [
   // {
   //   "matches": ["http://www.google.com/robots.txt*"],
