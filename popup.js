@@ -182,6 +182,7 @@ var recipeOrganizer = {
 document.addEventListener('DOMContentLoaded', function () {
   console.log("add event listener")
   var successURL = 'www.facebook.com/connect/login_success.html';
+  var usrEmail = undefined;
 
   if (!localStorage.getItem('accessToken')) {
     // display Facebook login title and link
@@ -198,7 +199,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   else {
     // get user email from Facebook access token
-    var usrEmail = "mandy.korpusik@students.olin.edu";
     var xhr = new XMLHttpRequest();
     var graphURL = "https://graph.facebook.com/me?access_token="+localStorage.getItem('accessToken');
     xhr.open("GET", graphURL, false);
@@ -206,11 +206,25 @@ document.addEventListener('DOMContentLoaded', function () {
         if (xhr.readyState == 4) {
           var usrEmail = JSON.parse(xhr.responseText).email;
           console.log("email", usrEmail);
-          
-          // display folders and forms
-          recipeOrganizer.displayFolders(usrEmail);
-          recipeOrganizer.displayNewFolder(usrEmail);
-          recipeOrganizer.displayButton(usrEmail);
+
+          if (usrEmail != undefined) {
+            // display folders and forms
+            recipeOrganizer.displayFolders(usrEmail);
+            recipeOrganizer.displayNewFolder(usrEmail);
+            recipeOrganizer.displayButton(usrEmail);
+          } else {
+            // display Facebook login title and link
+            var header = document.createElement('div');
+            header.innerHTML = "Facebook Connect For Chrome Extension";
+            document.body.appendChild(header);
+            var a = document.createElement('a');
+            a.title = "Facebook Connect";
+            var linkText = document.createTextNode("Facebook Connect");
+            a.appendChild(linkText);
+            a.href = "https://www.facebook.com/dialog/oauth?client_id=421108067985880&response_type=token&scope=email&redirect_uri=http://www.facebook.com/connect/login_success.html";
+            a.target = "_blank";
+            document.body.appendChild(a);
+          }
         }
     }
     xhr.send(null);
@@ -219,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function onFacebookLogin(){
     console.log("facebook login")
-    if (!localStorage.getItem('accessToken')) {
+    if (!localStorage.getItem('accessToken') || usrEmail===undefined) {
       console.log("no access token");
       chrome.tabs.query({}, function(tabs) { // get all tabs from every window
         for (var i = 0; i < tabs.length; i++) {
