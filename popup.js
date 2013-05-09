@@ -187,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (!localStorage.getItem('accessToken')) {
     // display Facebook login title and link
     var header = document.createElement('div');
-    header.innerHTML = "Facebook Connect For Chrome Extension";
+    header.innerHTML = "Log Into Facebook to Start Saving and Sharing Recipes!";
     document.body.appendChild(header);
     var a = document.createElement('a');
     a.title = "Facebook Connect";
