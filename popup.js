@@ -172,52 +172,76 @@ var recipeOrganizer = {
   }
 };
 
+// var adapterURL = chrome.extension.getURL("adapter.html");
+// console.log(adapterURL, "testing");
+
+
 /**
   * Run our recipe organizer script as soon as the document's DOM is ready.
   */
 document.addEventListener('DOMContentLoaded', function () {
-  //Create an XMLHttpRequest to get the email address
-  var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() { 
-      if( xhr.readyState == 4 ) {
-        if( xhr.status == 200 ) { 
-          console.log("status 200");
-          var parseResult = JSON.parse(xhr.responseText);
-          // The email address is located naw: 
-          usrEmail = parseResult["email"];
+  console.log("add event listener")
+  var successURL = 'www.facebook.com/connect/login_success.html';
+
+  if (!localStorage.getItem('accessToken')) {
+    // display Facebook login title and link
+    var header = document.createElement('div');
+    header.innerHTML = "Facebook Connect For Chrome Extension";
+    document.body.appendChild(header);
+    var a = document.createElement('a');
+    a.title = "Facebook Connect";
+    var linkText = document.createTextNode("Facebook Connect");
+    a.appendChild(linkText);
+    a.href = "https://www.facebook.com/dialog/oauth?client_id=421108067985880&response_type=token&scope=email&redirect_uri=http://www.facebook.com/connect/login_success.html";
+    a.target = "_blank";
+    document.body.appendChild(a);
+  }
+  else {
+    // get user email from Facebook access token
+    var usrEmail = "mandy.korpusik@students.olin.edu";
+    var xhr = new XMLHttpRequest();
+    var graphURL = "https://graph.facebook.com/me?access_token="+localStorage.getItem('accessToken');
+    xhr.open("GET", graphURL, false);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+          var usrEmail = JSON.parse(xhr.responseText).email;
           console.log("email", usrEmail);
-          recipeOrganizer.displayFolders(usrEmail);
-          recipeOrganizer.displayNewFolder(usrEmail);
-          recipeOrganizer.displayButton(usrEmail);
-        } else {
-          console.log("status not 200");
-          usrEmail = "mandy.korpusik@students.olin.edu";
-          console.log("error: use default email", usrEmail);
+          
+          // display folders and forms
           recipeOrganizer.displayFolders(usrEmail);
           recipeOrganizer.displayNewFolder(usrEmail);
           recipeOrganizer.displayButton(usrEmail);
         }
-      }
     }
-    // Open it up as GET, POST didn't work for me for the userinfo 
-    xhr.open("GET","https://www.googleapis.com/oauth2/v1/userinfo",true);
-    // Set the content & autherization 
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('Authorization', "OAuth " + googleAuth.getAccessToken() );
     xhr.send(null);
-    
-});
 
-/**
-  * Use Google OAuth2 to sign the user in and access her email address.
-  */
-var googleAuth = new OAuth2('google', {
-  client_id: '1049899099134.apps.googleusercontent.com',
-  client_secret: 'Vu_dfcSLcK1e7cxfHWGsGRhP',
-  api_scope: 'https://www.googleapis.com/auth/tasks', 
-  api_scope: 'https://www.googleapis.com/auth/userinfo.email'
-});
+  }
 
-googleAuth.authorize(function() {
-  console.log("authorizing");
+  function onFacebookLogin(){
+    console.log("facebook login")
+    if (!localStorage.getItem('accessToken')) {
+      console.log("no access token");
+      chrome.tabs.query({}, function(tabs) { // get all tabs from every window
+        for (var i = 0; i < tabs.length; i++) {
+          console.log("tabs[i]", tabs[i]);
+          if (tabs[i].url.indexOf(successURL) !== -1) {
+            console.log("matches successURL");
+            // below you get string like this: access_token=...&expires_in=...
+            var params = tabs[i].url.split('#')[1];
+
+            // in my extension I have used mootools method: parseQueryString. The following code is just an example ;)
+            var accessToken = params.split('&')[0];
+            accessToken = accessToken.split('=')[1];
+            console.log("access token", accessToken);
+
+            localStorage.setItem('accessToken', accessToken);
+            chrome.tabs.remove(tabs[i].id);
+          }
+        }
+      });
+    }
+  }
+
+  chrome.tabs.onUpdated.addListener(onFacebookLogin);
+
 });

@@ -4,9 +4,14 @@
   "manifest_version" : 2,
   "description": "SAMPLE_DESCRIPTION",
   "content_scripts": [
+  // {
+  //   "matches": ["http://www.google.com/robots.txt*"],
+  //   "js": ["oauth2_inject.js"],
+  //   "run_at": "document_start"
+  // },
   {
-    "matches": ["http://www.google.com/robots.txt*"],
-    "js": ["oauth2_inject.js"],
+    "matches": ["http://www.google.com/robots.txt"],
+    "js": ["injection.js"],
     "run_at": "document_start"
   },
   {
@@ -20,6 +25,9 @@
     "default_popup": "popup.html"
     },
 
-  "permissions": ["http://*.com/", "https://*.com/", "tabs", "http://localhost:3000/", "https://accounts.google.com/o/oauth2/token", "https://www.googleapis.com/oauth2/v1/userinfo", "https://www.googleapis.com/auth/userinfo.profile", "http://myrecipebox.herokuapp.com/"],
+  "permissions": ["http://*.com/", "https://docs.google.com/feeds/*", "https://*.com/", "tabs", "http://localhost:3000/", "https://accounts.google.com/o/oauth2/token", "https://www.googleapis.com/oauth2/v1/userinfo", "https://www.googleapis.com/auth/userinfo.profile", "http://myrecipebox.herokuapp.com/",
+  "https://www.google.com/accounts/OAuthGetRequestToken",
+  "https://www.google.com/accounts/OAuthAuthorizeToken",
+  "https://www.google.com/accounts/OAuthGetAccessToken"],
     "optional_permissions": [ "tabs"]
 }
