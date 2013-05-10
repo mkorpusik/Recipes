@@ -44,6 +44,14 @@ var recipeOrganizer = {
             img2 = $("#recipe-image", page).attr('href');
             console.log(img2);
           }
+          // scrape food.com for image and title
+          else if (url.match("food.com")) {
+            console.log("food");
+            img2 = $(".smallPageImage", page).attr('src');
+            title = $(".fn", page)[0].innerHTML;
+            console.log("title", title);
+            console.log(img2);
+          }
           
           if (img2 != undefined)
             img = img2;
