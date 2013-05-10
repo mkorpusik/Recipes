@@ -52,6 +52,12 @@ var recipeOrganizer = {
             console.log("title", title);
             console.log(img2);
           }
+          // scrape yummly.com for image and title
+          else if (url.match("yummly.com")) {
+            console.log("yummly");
+            img2 = $(".image", page).children().first().attr('src');
+            console.log(img2);
+          }
           
           if (img2 != undefined)
             img = img2;
@@ -242,29 +248,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
   }
 
-  function onFacebookLogin(){
-    console.log("facebook login")
-    console.log("usrEmail", localStorage.getItem('usrEmail'));
-    if (!localStorage.getItem('accessToken') || localStorage.getItem('usrEmail')===undefined) {
+  function onFacebookLogin(tabId, changeInfo, tab){
+    console.log("facebook login", tabId, changeInfo)
+    console.log("usrEmail", typeof(localStorage.getItem('usrEmail')), localStorage.getItem('usrEmail')==undefined);
+    if (!localStorage.getItem('accessToken') || localStorage.getItem('usrEmail')=="undefined") {
       console.log("no access token");
-      chrome.tabs.query({}, function(tabs) { // get all tabs from every window
-        for (var i = 0; i < tabs.length; i++) {
-          //console.log("tabs[i]", tabs[i]);
-          if (tabs[i].url.indexOf(successURL) !== -1) {
-            console.log("matches successURL");
-            // below you get string like this: access_token=...&expires_in=...
-            var params = tabs[i].url.split('#')[1];
+      console.log(changeInfo.url, changeInfo.url);
+      if (changeInfo.url && changeInfo.url.indexOf(successURL) !== -1) {
+        console.log("matches successURL");
+        // below you get string like this: access_token=...&expires_in=...
+        var params = changeInfo.url.split('#')[1];
 
-            // in my extension I have used mootools method: parseQueryString. The following code is just an example ;)
-            var accessToken = params.split('&')[0];
-            accessToken = accessToken.split('=')[1];
-            console.log("access token", accessToken);
+        // in my extension I have used mootools method: parseQueryString. The following code is just an example ;)
+        var accessToken = params.split('&')[0];
+        accessToken = accessToken.split('=')[1];
+        console.log("access token", accessToken);
 
-            localStorage.setItem('accessToken', accessToken);
-            chrome.tabs.remove(tabs[i].id);
-          }
-        }
-      });
+        localStorage.setItem('accessToken', accessToken);
+        chrome.tabs.remove(tabId, function(){
+          console.log("testing");
+        });
+      }
     }
   }
 
