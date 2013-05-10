@@ -184,6 +184,7 @@ var recipeOrganizer = {
 
     jQuery('#addFolderForm').on('submit', function () {
       jQuery.post("http://myrecipebox.herokuapp.com/addFolder", jQuery('#addFolderForm').serialize(), function(data){
+        console.log("successfully created folder")
         return true;
       });
     });
@@ -264,30 +265,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
   }
 
-  function onFacebookLogin(tabId, changeInfo, tab){
-    console.log("facebook login", tabId, changeInfo)
-    console.log("usrEmail", typeof(localStorage.getItem('usrEmail')), localStorage.getItem('usrEmail')==undefined);
-    if (!localStorage.getItem('accessToken') || localStorage.getItem('usrEmail')=="undefined") {
-      console.log("no access token");
-      console.log(changeInfo.url, changeInfo.url);
-      if (changeInfo.url && changeInfo.url.indexOf(successURL) !== -1) {
-        console.log("matches successURL");
-        // below you get string like this: access_token=...&expires_in=...
-        var params = changeInfo.url.split('#')[1];
+  // function onFacebookLogin(tabId, changeInfo, tab){
+  //   console.log("facebook login", tabId, changeInfo)
+  //   console.log("usrEmail", typeof(localStorage.getItem('usrEmail')), localStorage.getItem('usrEmail')==undefined);
+  //   if (!localStorage.getItem('accessToken') || localStorage.getItem('usrEmail')=="undefined") {
+  //     console.log("no access token");
+  //     console.log(changeInfo.url, changeInfo.url);
+  //     if (changeInfo.url && changeInfo.url.indexOf(successURL) !== -1) {
+  //       console.log("matches successURL");
+  //       // below you get string like this: access_token=...&expires_in=...
+  //       var params = changeInfo.url.split('#')[1];
 
-        // in my extension I have used mootools method: parseQueryString. The following code is just an example ;)
-        var accessToken = params.split('&')[0];
-        accessToken = accessToken.split('=')[1];
-        console.log("access token", accessToken);
+  //       // in my extension I have used mootools method: parseQueryString. The following code is just an example ;)
+  //       var accessToken = params.split('&')[0];
+  //       accessToken = accessToken.split('=')[1];
+  //       console.log("access token", accessToken);
 
-        localStorage.setItem('accessToken', accessToken);
-        chrome.tabs.remove(tabId, function(){
-          console.log("testing");
-        });
-      }
-    }
-  }
+  //       // var i;
+  //       // for (i=0; i < 5; i++) {
+          
+  //       // }
 
-  chrome.tabs.onUpdated.addListener(onFacebookLogin);
+  //       localStorage.setItem('accessToken', accessToken);
+  //       chrome.tabs.remove(tabId, function(){
+  //         console.log("testing");
+  //       });
+  //     }
+  //   }
+  // }
+
+  // chrome.tabs.onUpdated.addListener(onFacebookLogin);
 
 });
