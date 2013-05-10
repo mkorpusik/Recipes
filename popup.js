@@ -68,11 +68,21 @@ var recipeOrganizer = {
       var req = new XMLHttpRequest();
       req.open("POST", 'http://myrecipebox.herokuapp.com/addRecipe', true);
       req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      // req.onreadystatechange = function() {
+      //   console.log("status", req.status);
+      //   if (req.status == 200) {
+      //     // after 1 sec, change button's background image back to normal
+      //     var myVar=setInterval(function(){
+      //       btn.style.backgroundImage = 'url("public/folder.png")';
+      //     },1000);
+      //   }
+      // }
       req.send('url='+url+'&folder='+folderID+'&title='+title+'&img='+img);
-
+      // console.log("response", req.responseXML);
       // after 1 sec, change button's background image back to normal
-      var myVar=setInterval(function(){btn.style.backgroundImage = 'url("public/folder.png")';},1000);
-      
+      var myVar=setInterval(function(){
+        btn.style.backgroundImage = 'url("public/folder.png")';
+      },1000);
     });
   },
 
@@ -199,6 +209,7 @@ document.addEventListener('DOMContentLoaded', function () {
   console.log("add event listener")
   var successURL = 'www.facebook.com/connect/login_success.html';
   var usrEmail = undefined;
+  localStorage.setItem('usrEmail', "undefined");
 
   if (!localStorage.getItem('accessToken')) {
     // display Facebook login title and link
