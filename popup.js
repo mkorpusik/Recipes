@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log("no access token");
       chrome.tabs.query({}, function(tabs) { // get all tabs from every window
         for (var i = 0; i < tabs.length; i++) {
-          console.log("tabs[i]", tabs[i]);
+          //console.log("tabs[i]", tabs[i]);
           if (tabs[i].url.indexOf(successURL) !== -1) {
             console.log("matches successURL");
             // below you get string like this: access_token=...&expires_in=...
