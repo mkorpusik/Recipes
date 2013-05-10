@@ -8,7 +8,8 @@ var recipeOrganizer = {
   */
   saveRecipe: function(folderID, btn) {
     // change button's background image
-    btn.style.backgroundImage = 'url("public/folderBlueGrey.png")';
+    var imgURL = 'url("public/folderBlueGrey.png")'
+    btn.style.backgroundImage = imgURL;
 
     chrome.tabs.query({active:true, currentWindow:true},function(tab){
       url = tab[0].url;
@@ -205,6 +206,7 @@ document.addEventListener('DOMContentLoaded', function () {
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4) {
           var usrEmail = JSON.parse(xhr.responseText).email;
+          localStorage.setItem('usrEmail', usrEmail);
           console.log("email", usrEmail);
 
           if (usrEmail != undefined) {
@@ -233,7 +235,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function onFacebookLogin(){
     console.log("facebook login")
-    if (!localStorage.getItem('accessToken') || usrEmail===undefined) {
+    console.log("usrEmail", localStorage.getItem('usrEmail'));
+    if (!localStorage.getItem('accessToken') || localStorage.getItem('usrEmail')===undefined) {
       console.log("no access token");
       chrome.tabs.query({}, function(tabs) { // get all tabs from every window
         for (var i = 0; i < tabs.length; i++) {
