@@ -1,6 +1,6 @@
 {
   "name": "My Recipe Box",
-  "version": "0.5",
+  "version": "0.6",
   "manifest_version" : 2,
   "description": "An online recipe organizer that allows you to share your recipe folders with friends!",
   "content_scripts": [
