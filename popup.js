@@ -154,8 +154,9 @@ var recipeOrganizer = {
     document.body.appendChild(form);
 
     jQuery('#addFolderForm').on('submit', function () {
-      jQuery.post("http://myrecipebox.herokuapp.com/addFolder", jQuery('#addFolderForm').serialize());
-      return true;
+      jQuery.post("http://myrecipebox.herokuapp.com/addFolder", jQuery('#addFolderForm').serialize(), function(data){
+        return true;
+      });
     });
     
   },
