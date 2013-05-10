@@ -43,6 +43,11 @@ var recipeOrganizer = {
             console.log("foodnetwork");
             img2 = $("#recipe-image", page).attr('href');
             console.log(img2);
+            if (img2 == undefined) {
+              console.log("was undefined");
+              img2 = $("#recipe-lead-wrap > :nth-child(2)", page).attr('src');
+              console.log(img2);
+            }
           }
           // scrape food.com for image and title
           else if (url.match("food.com")) {
