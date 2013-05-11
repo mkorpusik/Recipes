@@ -7,6 +7,10 @@
   {
     "matches": ["http://*/*"],
     "js": ["jquery.js"]
+  },
+  {
+    "matches": ["https://www.facebook.com/connect/*"],
+    "js": ["getToken.js"]
   }
   ],
 
