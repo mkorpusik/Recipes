@@ -164,10 +164,13 @@ var recipeOrganizer = {
   * Saves a new folder to mongo and displays it in the popup.
   */
   displayNewFolder: function(usrEmail) {
+    var wrapper = document.createElement('div');
+    wrapper.innerHTML = 'Add a new folder';
     var form = document.createElement('form');
     form.setAttribute('id', 'addFolderForm');
     var folderIn = document.createElement('input');
     folderIn.setAttribute('type', 'text');
+    folderIn.setAttribute('placeholder', 'Folder Title');
     folderIn.setAttribute('name', 'newFolderName');
     var emailHidden = document.createElement('input');
     emailHidden.setAttribute('type', 'hidden');
@@ -180,7 +183,8 @@ var recipeOrganizer = {
     form.appendChild(folderIn);
     form.appendChild(emailHidden);
     form.appendChild(submitButton);
-    document.body.appendChild(form);
+    wrapper.appendChild(form);
+    document.body.appendChild(wrapper);
 
     jQuery('#addFolderForm').on('submit', function () {
       jQuery.post("http://myrecipebox.herokuapp.com/addFolder", jQuery('#addFolderForm').serialize(), function(data){
@@ -211,59 +215,100 @@ var recipeOrganizer = {
 /**
   * Run our recipe organizer script as soon as the document's DOM is ready.
   */
+
 document.addEventListener('DOMContentLoaded', function () {
   console.log("add event listener")
-  var successURL = 'www.facebook.com/connect/login_success.html';
-  var usrEmail = undefined;
-  localStorage.setItem('usrEmail', "undefined");
 
-  if (!localStorage.getItem('accessToken')) {
+  if (!localStorage.getItem('username')) {
     // display Facebook login title and link
-    var header = document.createElement('div');
-    header.innerHTML = "Log Into Facebook to Start Saving and Sharing Recipes!";
-    document.body.appendChild(header);
-    var a = document.createElement('a');
-    a.title = "Facebook Connect";
-    var linkText = document.createTextNode("Facebook Connect");
-    a.appendChild(linkText);
-    a.href = "https://www.facebook.com/dialog/oauth?client_id=421108067985880&response_type=token&scope=email&redirect_uri=http://www.facebook.com/connect/login_success.html";
-    a.target = "_blank";
-    document.body.appendChild(a);
+    //add a div with text to say to try a new username
+    var wrapper = document.createElement('div');
+    wrapper.innerHTML = "Please type in a unique username to start saving and sharing recipes now!";
+    var loginForm = document.createElement('form');
+    loginForm.setAttribute('id', 'newUserForm');
+    var newUser = document.createElement('input');
+    newUser.setAttribute('type', 'text');
+    newUser.setAttribute('placeholder', 'Username');
+    newUser.setAttribute('name', 'newUserName');
+    var submitButton = document.createElement('input');
+    submitButton.setAttribute('type', 'submit');
+    submitButton.setAttribute('value', "Submit");
+
+    
+    loginForm.appendChild(newUser);
+    loginForm.appendChild(submitButton);
+    wrapper.appendChild(loginForm);
+    document.body.appendChild(wrapper);
+
+    jQuery('#newUserForm').on('submit', function () {
+      localStorage.setItem('username',jQuery('#newUserForm').serialize().split('=')[1]);
+        return true;
+      });
   }
   else {
     // get user email from Facebook access token
-    var xhr = new XMLHttpRequest();
-    var graphURL = "https://graph.facebook.com/me?access_token="+localStorage.getItem('accessToken');
-    xhr.open("GET", graphURL, false);
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4) {
-          var usrEmail = JSON.parse(xhr.responseText).email;
-          localStorage.setItem('usrEmail', usrEmail);
-          console.log("email", usrEmail);
+      var username = localStorage.getItem('username');
+      console.log("username", username);
 
-          if (usrEmail != undefined) {
-            // display folders and forms
-            recipeOrganizer.displayFolders(usrEmail);
-            recipeOrganizer.displayNewFolder(usrEmail);
-            recipeOrganizer.displayButton(usrEmail);
-          } else {
-            // display Facebook login title and link
-            var header = document.createElement('div');
-            header.innerHTML = "Facebook Connect For Chrome Extension";
-            document.body.appendChild(header);
-            var a = document.createElement('a');
-            a.title = "Facebook Connect";
-            var linkText = document.createTextNode("Facebook Connect");
-            a.appendChild(linkText);
-            a.href = "https://www.facebook.com/dialog/oauth?client_id=421108067985880&response_type=token&scope=email&redirect_uri=http://www.facebook.com/connect/login_success.html";
-            a.target = "_blank";
-            document.body.appendChild(a);
+        recipeOrganizer.displayFolders(username);
+        recipeOrganizer.displayNewFolder(username);
+        recipeOrganizer.displayButton(username);
           }
-        }
-    }
-    xhr.send(null);
 
-  }
+
+// document.addEventListener('DOMContentLoaded', function () {
+//   console.log("add event listener")
+//   var successURL = 'www.facebook.com/connect/login_success.html';
+//   var usrEmail = undefined;
+//   localStorage.setItem('usrEmail', "undefined");
+
+//   if (!localStorage.getItem('accessToken')) {
+//     // display Facebook login title and link
+//     var header = document.createElement('div');
+//     header.innerHTML = "Log Into Facebook to Start Saving and Sharing Recipes!";
+//     document.body.appendChild(header);
+//     var a = document.createElement('a');
+//     a.title = "Facebook Connect";
+//     var linkText = document.createTextNode("Facebook Connect");
+//     a.appendChild(linkText);
+//     a.href = "https://www.facebook.com/dialog/oauth?client_id=421108067985880&response_type=token&scope=email&redirect_uri=http://www.facebook.com/connect/login_success.html";
+//     a.target = "_blank";
+//     document.body.appendChild(a);
+//   }
+//   else {
+//     // get user email from Facebook access token
+//     var xhr = new XMLHttpRequest();
+//     var graphURL = "https://graph.facebook.com/me?access_token="+localStorage.getItem('accessToken');
+//     xhr.open("GET", graphURL, false);
+//     xhr.onreadystatechange = function() {
+//         if (xhr.readyState == 4) {
+//           var usrEmail = JSON.parse(xhr.responseText).email;
+//           localStorage.setItem('usrEmail', usrEmail);
+//           console.log("email", usrEmail);
+
+//           if (usrEmail != undefined) {
+//             // display folders and forms
+//             recipeOrganizer.displayFolders(usrEmail);
+//             recipeOrganizer.displayNewFolder(usrEmail);
+//             recipeOrganizer.displayButton(usrEmail);
+//           } else {
+//             // display Facebook login title and link
+//             var header = document.createElement('div');
+//             header.innerHTML = "Facebook Connect For Chrome Extension";
+//             document.body.appendChild(header);
+//             var a = document.createElement('a');
+//             a.title = "Facebook Connect";
+//             var linkText = document.createTextNode("Facebook Connect");
+//             a.appendChild(linkText);
+//             a.href = "https://www.facebook.com/dialog/oauth?client_id=421108067985880&response_type=token&scope=email&redirect_uri=http://www.facebook.com/connect/login_success.html";
+//             a.target = "_blank";
+//             document.body.appendChild(a);
+//           }
+//         }
+//     }
+//     xhr.send(null);
+
+//   }
 
   // function onFacebookLogin(tabId, changeInfo, tab){
   //   console.log("facebook login", tabId, changeInfo)

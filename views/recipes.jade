@@ -27,7 +27,7 @@ block content
         input(type="submit", value="Delete Folder", class="deleteFolder btn", style="margin:5px")
     h4(style="margin:0px") shared with #{folder.owners}
     form(action="/shareFolder", method="post", class="form-inline", style="margin-bottom:0px")
-        input(type="text", name="sharer", placeholder="Friend's Facebook Email", style="margin:5px")
+        input(type="text", name="sharer", placeholder="Friend's Username", style="margin:5px")
         input(type="hidden", name="folder", value=folder._id, class="input-small")
         input(type="hidden", name="email", value=email, class="input-small")
         input(type="submit", value="Share Folder", class="shareFolder btn")
