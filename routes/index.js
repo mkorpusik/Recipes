@@ -120,6 +120,7 @@ exports.addFolder = function(req, res){
 exports.addUser = function(req, res){
   var username = req.body.newUserName;
   var password = req.body.newPassword;
+  console.log("unhashed password", password);
   var passwordHashed = bcrypt.hashSync(password, 10);
   console.log("hashed password", passwordHashed);
   var newUser = new User({ username: username, password : passwordHashed});
