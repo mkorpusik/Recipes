@@ -160,7 +160,7 @@ exports.loginUser = function(req, res){
     } else {
       return false;
     }
-  }
+  });
 
 };
 
