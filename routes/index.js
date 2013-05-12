@@ -132,12 +132,12 @@ exports.addUser = function(req, res){
         if (err){
           console.log(err);
         } else {
-          return true;
+          res.send('true');
         }
       });
     }
   } else {
-    return false;
+    res.send('false');
   }
 };
 
@@ -151,14 +151,14 @@ exports.loginUser = function(req, res){
   var findUser = User.findOne({'username':username}).exec(function(foundUser, error) {
     if (error  || foundUser == null) {
       console.log("error or null");
-      return false;
+      res.send('false');
     } 
     var retrievedPass = foundUser.password;
     var success  = bcrypt.compareSync(password, retrievedPass);
     if (success) {
-      return true;
+      res.send('true');
     } else {
-      return false;
+      res.send('false');
     }
   });
 
