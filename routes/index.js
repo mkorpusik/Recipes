@@ -122,16 +122,46 @@ exports.addFolder = function(req, res){
 exports.addUser = function(req, res){
   var username = req.body.newUserName;
   var password = req.body.newPassword;
-  console.log("unhashed password", password);
-  var passwordHashed = bcrypt.hashSync(password, 10);
-  console.log("hashed password", passwordHashed);
-  var newUser = new User({ username: username, password : passwordHashed});
-  if (username.length > 0) {
-    newUser.save(function (err) {
-      if (err)
-        return console.log(err);
-    });
+  var confirmPass = req.body.confirmPassword;
+  if (password == confirmPass) {
+    var passwordHashed = bcrypt.hashSync(password, 10);
+    console.log("hashed password", passwordHashed);
+    var newUser = new User({ username: username, password : passwordHashed});
+    if (username.length > 0) {
+      newUser.save(function (err) {
+        if (err){
+          console.log(err);
+        } else {
+          return true;
+        }
+      });
+    }
+  } else {
+    return false;
   }
+};
+
+/**
+  * Check a user's password from mongo.
+  */
+exports.loginUser = function(req, res){
+  var username = req.body.newUserName;
+  var password = req.body.newPassword;
+
+  var findUser = User.findOne({'username':username}).exec(function(foundUser, error) {
+    if (error) {
+      console.log(error);
+      return false;
+    } 
+    var retrievedPass = foundUser.password;
+    var success  = bcrypt.compareSync(password, retrievedPass));
+    if (success) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 };
 
 /**
