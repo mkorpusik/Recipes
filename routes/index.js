@@ -175,10 +175,12 @@ exports.folders = function(req, res){
   var email = req.params.email.slice(1);
   var folders =  Folder.find({owners: email}).sort('title').exec(function (err, docs) {
     var folderNames = [];
+    var folderIds = [];
     for (var i in docs) {
       folderNames.push(docs[i].title);
+      folderIds.push(docs[i]._id);
     }
-    res.send(folderNames);
+    res.send([folderNames, folderIds]);
   });
 };
 

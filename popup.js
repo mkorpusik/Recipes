@@ -8,7 +8,7 @@ var recipeOrganizer = {
   */
   saveRecipe: function(folderID, btn) {
     // change button's background image
-    var imgURL = 'url("public/plusBlue.png")'
+    var imgURL = 'url("public/folderBlueGrey.png")'
     btn.style.backgroundImage = imgURL;
 
     chrome.tabs.query({active:true, currentWindow:true},function(tab){
@@ -86,7 +86,7 @@ var recipeOrganizer = {
       // console.log("response", req.responseXML);
       // after 1 sec, change button's background image back to normal
       var myVar=setInterval(function(){
-        btn.style.backgroundImage = 'url("public/plus.png")';
+        btn.style.backgroundImage = 'url("public/folder.png")';
       },1000);
     });
   },
@@ -112,35 +112,56 @@ var recipeOrganizer = {
   displayFolders: function(usrEmail) {
     console.log('displaying folders');
 
+    var wrapper = document.createElement('div');
+    wrapper.innerHTML = "Click the + button next to any folder to add the current recipe page to it.";
+    wrapper.style.padding = '0px 0px 15px 0px';
+    document.body.appendChild(wrapper);
+
     // get folder names from mongo db by GETting from local host
     var folderNames = new XMLHttpRequest();
     folderNames.open("GET", 'http://myrecipebox.herokuapp.com/folders/:'+usrEmail, false);
     folderNames.send(null);
-    var folders = this.parseDOMString(folderNames.responseText);
+    //var folders = this.parseDOMString(folderNames.responseText);
+    console.log("response", folderNames.responseText);
+    var folders = JSON.parse(folderNames.responseText);
+    console.log("folders", folders);
     for (var i = 0; i < folders.length; i++) {
       // add wrapper div
       var folder = document.createElement('div');
       folder.setAttribute('id', folders[i]);
+      folder.style.padding = '0px 0px 5px 0px';
       document.body.appendChild(folder);
 
       // add folder icon 
       var btn = document.createElement('BUTTON');
       btn.setAttribute('id', folders[i]);
-      btn.style.backgroundImage = 'url("public/plus.png")';
+      btn.style.backgroundImage = 'url("public/folder.png")';
       btn.style.backgroundRepeat = 'no-repeat';
       btn.style.backgroundSize = '35px 35px';
       btn.style.height = '40px';
       btn.style.width = '40px';
       btn.style.display = 'inline-block';
+      btn.style.padding = '0px 8px 0px 2px';
       btn.onclick = function() {
         recipeOrganizer.saveRecipe(this.id, this);
       };
       document.getElementById(folders[i]).appendChild(btn);
 
       // add label div
-      var label = document.createElement('div');
-      label.innerHTML = folders[i];
+      // var label = document.createElement('div');
+      // label.innerHTML = folders[i];
+      // label.style.display = 'inline-block';
+      // label.style.padding = '0px 0px 0px 8px';
+      // document.getElementById(folders[i]).appendChild(label);
+
+      var label = document.createElement('a');
+      label.title = folders[i];
       label.style.display = 'inline-block';
+      label.style.padding = '0px 0px 0px 8px';
+      var linkText = document.createTextNode(folders[i]);
+      label.appendChild(linkText);
+      label.href = "http://myrecipebox.herokuapp.com/recipes/:"+usrEmail; //+"/:"+folderIds[i]
+      label.target = "_blank";
       document.getElementById(folders[i]).appendChild(label);
     }
   },
@@ -166,6 +187,7 @@ var recipeOrganizer = {
   displayNewFolder: function(usrEmail) {
     var wrapper = document.createElement('div');
     wrapper.innerHTML = 'Add a new folder';
+    wrapper.style.padding = '15px 0px 0px 0px';
     var form = document.createElement('form');
     form.setAttribute('id', 'addFolderForm');
     var folderIn = document.createElement('input');
@@ -231,7 +253,7 @@ document.addEventListener('DOMContentLoaded', function () {
     newUser.setAttribute('placeholder', 'Username');
     newUser.setAttribute('name', 'newUserName');
     var newPass = document.createElement('input');
-    newPass.setAttribute('type', 'text');
+    newPass.setAttribute('type', 'password');
     newPass.setAttribute('placeholder', 'Password');
     newPass.setAttribute('name', 'newPassword');
     var submitButton = document.createElement('input');
