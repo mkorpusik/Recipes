@@ -303,16 +303,16 @@ var recipeOrganizer = {
 
     jQuery('#loginForm').on('submit', function () {
       var newname = jQuery('#loginForm').serialize().split('=')[1].split('&')[0];
-      console.log('username', newname);
+      console.log('username login', newname);
       jQuery.post("http://myrecipebox.herokuapp.com/loginUser", jQuery('#loginForm').serialize(), function(data){
-        console.log("data:", data);
+        console.log("data", data);
         console.log(typeof(data));
         if (data == 'true') {
           localStorage.setItem('username', newname);
         } else {
           window.alert("Incorrect username or password");
         }
-        return true;
+        //return true;
       });
     });
 
@@ -363,14 +363,14 @@ var recipeOrganizer = {
       console.log('new username', newname);
       jQuery.post("http://myrecipebox.herokuapp.com/addUser", jQuery('#newUserForm').serialize(), function(data){
         console.log("bananas");
-        console.log("data new user:", data);
+        console.log("data new user", data);
         console.log(typeof(data));
         if (data == 'true') {
           localStorage.setItem('username', newname);
         } else {
           window.alert("Passwords do not match");
         }
-        //return true;
+        return true;
       });
     });
   }

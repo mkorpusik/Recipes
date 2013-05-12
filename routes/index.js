@@ -145,6 +145,7 @@ exports.addUser = function(req, res){
   * Check a user's password from mongo.
   */
 exports.loginUser = function(req, res){
+  console.log("logging in user");
   var username = req.body.newUserName;
   var password = req.body.newPassword;
 
