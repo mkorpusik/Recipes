@@ -230,20 +230,29 @@ document.addEventListener('DOMContentLoaded', function () {
     newUser.setAttribute('type', 'text');
     newUser.setAttribute('placeholder', 'Username');
     newUser.setAttribute('name', 'newUserName');
+    var newPass = document.createElement('input');
+    newPass.setAttribute('type', 'text');
+    newPass.setAttribute('placeholder', 'Password');
+    newPass.setAttribute('name', 'newPassword');
     var submitButton = document.createElement('input');
     submitButton.setAttribute('type', 'submit');
     submitButton.setAttribute('value', "Submit");
 
     
     loginForm.appendChild(newUser);
+    loginForm.appendChild(newPass);
     loginForm.appendChild(submitButton);
     wrapper.appendChild(loginForm);
     document.body.appendChild(wrapper);
 
     jQuery('#newUserForm').on('submit', function () {
-      localStorage.setItem('username',jQuery('#newUserForm').serialize().split('=')[1]);
+      var newname = jQuery('#newUserForm').serialize().split('=')[1];
+      localStorage.setItem('username', newname);
+      console.log('username', newname);
+      jQuery.post("http://myrecipebox.herokuapp.com/addUser", jQuery('#newUserForm').serialize(), function(data){
         return true;
       });
+    });
   }
   else {
     // get user email from Facebook access token

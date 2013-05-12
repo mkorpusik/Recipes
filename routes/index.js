@@ -115,6 +115,23 @@ exports.addFolder = function(req, res){
 };
 
 /**
+  * Add a new user to mongo.
+  */
+exports.addUser = function(req, res){
+  var username = req.body.newUserName;
+  var password = req.body.newPassword;
+  var passwordHashed = bcrypt.hashSync(password, 10);
+  console.log("hashed password", passwordHashed);
+  var newUser = new User({ username: username, password : passwordHashed});
+  if (username.length > 0) {
+    newUser.save(function (err) {
+      if (err)
+        return console.log(err);
+    });
+  }
+};
+
+/**
   * Render recipes page with first folder found in mongo, or if no folders exist, renders index page.
   */
 exports.recipes = function(req, res){

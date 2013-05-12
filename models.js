@@ -20,7 +20,7 @@ var folderSchema = mongoose.Schema({
 var Folder = mongoose.model('Folder', folderSchema);
 
 var userSchema = mongoose.Schema({
-  email: String,
+  username: String,
   password: String
 });
 
