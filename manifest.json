@@ -1,16 +1,12 @@
 {
   "name": "My Recipe Box",
-  "version": "0.6.1",
+  "version": "0.8",
   "manifest_version" : 2,
   "description": "An online recipe organizer that allows you to share your recipe folders with friends!",
   "content_scripts": [
   {
-    "matches": ["http://*/*"],
+    "matches": ["http://*/*", "https://*/*"],
     "js": ["jquery.js"]
-  },
-  {
-    "matches": ["https://www.facebook.com/connect/*"],
-    "js": ["getToken.js"]
   }
   ],
 

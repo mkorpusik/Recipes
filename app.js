@@ -4,6 +4,7 @@
  */
 
 var express = require('express')
+  , bcrypt = require('bcrypt')
   , routes = require('./routes')
   , user = require('./routes/user')
   , http = require('http')

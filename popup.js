@@ -8,7 +8,7 @@ var recipeOrganizer = {
   */
   saveRecipe: function(folderID, btn) {
     // change button's background image
-    var imgURL = 'url("public/folderBlueGrey.png")'
+    var imgURL = 'url("public/plusBlue.png")'
     btn.style.backgroundImage = imgURL;
 
     chrome.tabs.query({active:true, currentWindow:true},function(tab){
@@ -86,7 +86,7 @@ var recipeOrganizer = {
       // console.log("response", req.responseXML);
       // after 1 sec, change button's background image back to normal
       var myVar=setInterval(function(){
-        btn.style.backgroundImage = 'url("public/folder.png")';
+        btn.style.backgroundImage = 'url("public/plus.png")';
       },1000);
     });
   },
@@ -126,7 +126,7 @@ var recipeOrganizer = {
       // add folder icon 
       var btn = document.createElement('BUTTON');
       btn.setAttribute('id', folders[i]);
-      btn.style.backgroundImage = 'url("public/folder.png")';
+      btn.style.backgroundImage = 'url("public/plus.png")';
       btn.style.backgroundRepeat = 'no-repeat';
       btn.style.backgroundSize = '35px 35px';
       btn.style.height = '40px';
