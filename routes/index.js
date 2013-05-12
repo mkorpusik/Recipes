@@ -152,13 +152,14 @@ exports.loginUser = function(req, res){
     if (error  || foundUser == null) {
       console.log("error or null");
       res.send('false');
-    } 
-    var retrievedPass = foundUser.password;
-    var success  = bcrypt.compareSync(password, retrievedPass);
-    if (success) {
-      res.send('true');
     } else {
-      res.send('false');
+      var retrievedPass = foundUser.password;
+      var success  = bcrypt.compareSync(password, retrievedPass);
+      if (success) {
+        res.send('true');
+      } else {
+        res.send('false');
+      }
     }
   });
 
