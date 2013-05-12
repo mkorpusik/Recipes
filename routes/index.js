@@ -154,7 +154,7 @@ exports.loginUser = function(req, res){
       return false;
     } 
     var retrievedPass = foundUser.password;
-    var success  = bcrypt.compareSync(password, retrievedPass));
+    var success  = bcrypt.compareSync(password, retrievedPass);
     if (success) {
       return true;
     } else {
