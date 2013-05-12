@@ -112,29 +112,38 @@ var recipeOrganizer = {
   displayFolders: function(usrEmail) {
     console.log('displaying folders');
 
-    var wrapper = document.createElement('div');
-    wrapper.innerHTML = "Click the + button next to any folder to add the current recipe page to it.";
-    wrapper.style.padding = '0px 0px 15px 0px';
-    document.body.appendChild(wrapper);
-
     // get folder names from mongo db by GETting from local host
-    var folderNames = new XMLHttpRequest();
-    folderNames.open("GET", 'http://myrecipebox.herokuapp.com/folders/:'+usrEmail, false);
-    folderNames.send(null);
+    var getFolders = new XMLHttpRequest();
+    getFolders.open("GET", 'http://myrecipebox.herokuapp.com/folders/:'+usrEmail, false);
+    getFolders.send(null);
     //var folders = this.parseDOMString(folderNames.responseText);
-    console.log("response", folderNames.responseText);
-    var folders = JSON.parse(folderNames.responseText);
-    console.log("folders", folders);
-    for (var i = 0; i < folders.length; i++) {
+    console.log("response", getFolders.responseText);
+    var folders = JSON.parse(getFolders.responseText);
+    var folderNames = folders[0];
+    var folderIds = folders[1];
+
+    if (folderNames.length > 0) {
+      var wrapper = document.createElement('div');
+      wrapper.innerHTML = "Click the + button next to any folder to add the current recipe page to it.";
+      wrapper.style.padding = '0px 0px 15px 0px';
+      document.body.appendChild(wrapper);
+    } else {
+      var wrapper = document.createElement('div');
+      wrapper.innerHTML = "Welcome to your Recipe Box! Get started by creating a folder.";
+      wrapper.style.padding = '0px 0px 15px 0px';
+      document.body.appendChild(wrapper);
+    };
+
+    for (var i = 0; i < folderNames.length; i++) {
       // add wrapper div
       var folder = document.createElement('div');
-      folder.setAttribute('id', folders[i]);
+      folder.setAttribute('id', folderNames[i]);
       folder.style.padding = '0px 0px 5px 0px';
       document.body.appendChild(folder);
 
       // add folder icon 
       var btn = document.createElement('BUTTON');
-      btn.setAttribute('id', folders[i]);
+      btn.setAttribute('id', folderNames[i]);
       btn.style.backgroundImage = 'url("public/folder.png")';
       btn.style.backgroundRepeat = 'no-repeat';
       btn.style.backgroundSize = '35px 35px';
@@ -145,7 +154,7 @@ var recipeOrganizer = {
       btn.onclick = function() {
         recipeOrganizer.saveRecipe(this.id, this);
       };
-      document.getElementById(folders[i]).appendChild(btn);
+      document.getElementById(folderNames[i]).appendChild(btn);
 
       // add label div
       // var label = document.createElement('div');
@@ -155,14 +164,14 @@ var recipeOrganizer = {
       // document.getElementById(folders[i]).appendChild(label);
 
       var label = document.createElement('a');
-      label.title = folders[i];
+      label.title = folderNames[i];
       label.style.display = 'inline-block';
       label.style.padding = '0px 0px 0px 8px';
-      var linkText = document.createTextNode(folders[i]);
+      var linkText = document.createTextNode(folderNames[i]);
       label.appendChild(linkText);
-      label.href = "http://myrecipebox.herokuapp.com/recipes/:"+usrEmail; //+"/:"+folderIds[i]
+      label.href = "http://myrecipebox.herokuapp.com/recipes/:"+usrEmail+"/:"+folderIds[i];
       label.target = "_blank";
-      document.getElementById(folders[i]).appendChild(label);
+      document.getElementById(folderNames[i]).appendChild(label);
     }
   },
 
@@ -227,7 +236,131 @@ var recipeOrganizer = {
       chrome.tabs.create({ url: 'http://myrecipebox.herokuapp.com/recipes/:'+usrEmail });
     };
     document.body.appendChild(button);
+  },
+
+    /**
+  * Displays the button that, when clicked, logs the user out.
+  */
+  displayLogout: function(usrEmail) {
+
+    var form = document.createElement('form');
+    form.setAttribute('id', 'logoutForm');
+    var submitButton = document.createElement('input');
+    submitButton.setAttribute('type', 'submit');
+    submitButton.setAttribute('value', "Logout");
+    form.appendChild(submitButton);
+    document.body.appendChild(form);
+    jQuery('#logoutForm').on('submit', function () {
+      console.log("logging out");
+      localStorage.removeItem('username');
+      return true;
+    });
+  },
+
+      /**
+  * Displays the button that, when clicked, logs the user out.
+  */
+  displayLogin: function() {
+
+    // display Facebook login title and link
+    //add a div with text to say to try a new username
+    var wrapper = document.createElement('div');
+    //wrapper.innerHTML = "Please type in a unique username to start saving and sharing recipes now!";
+    wrapper.innerHTML = "Log in with an existing account or click Create Account";
+
+
+    var loginForm = document.createElement('form');
+    loginForm.setAttribute('id', 'loginForm');
+    var newUser = document.createElement('input');
+    newUser.setAttribute('type', 'text');
+    newUser.setAttribute('placeholder', 'Username');
+    newUser.setAttribute('name', 'newUserName');
+    var newPass = document.createElement('input');
+    newPass.setAttribute('type', 'password');
+    newPass.setAttribute('placeholder', 'Password');
+    newPass.setAttribute('name', 'newPassword');
+    var submitButton = document.createElement('input');
+    submitButton.setAttribute('type', 'submit');
+    submitButton.setAttribute('value', "Submit");
+    submitButton.setAttribute('id', 'submitButton');
+
+    var newUserButton = document.createElement('BUTTON');
+    newUserButton.innerHTML = "Create Account";
+    newUserButton.setAttribute('id', 'createButton');
+    newUserButton.onclick = function(){
+      recipeOrganizer.displaySingup();
+
+    };
+
+    
+    loginForm.appendChild(newUser);
+    loginForm.appendChild(newPass);
+    loginForm.appendChild(submitButton);
+    // loginForm.appendChild(newUserButton);
+    wrapper.appendChild(loginForm);
+    wrapper.appendChild(newUserButton);
+    document.body.appendChild(wrapper);
+
+    jQuery('#loginForm').on('submit', function () {
+      var newname = jQuery('#loginForm').serialize().split('=')[1].split('&')[0];
+      localStorage.setItem('username', newname);
+      console.log('username', newname);
+      jQuery.post("http://myrecipebox.herokuapp.com/addUser", jQuery('#newUserForm').serialize(), function(data){
+        return true;
+      });
+    });
+
+  },
+
+      /**
+  * Displays the button that, when clicked, logs the user out.
+  */
+  displaySingup: function() {
+
+    var newElement = document.createElement('body');
+    document.body = newElement;
+
+    var wrapper = document.createElement('div');
+    //wrapper.innerHTML = "Please type in a unique username to start saving and sharing recipes now!";
+    wrapper.innerHTML = "Log in with an existing account or click Create Account";
+
+
+    var loginForm = document.createElement('form');
+    loginForm.setAttribute('id', 'newUserForm');
+    var newUser = document.createElement('input');
+    newUser.setAttribute('type', 'text');
+    newUser.setAttribute('placeholder', 'Username');
+    newUser.setAttribute('name', 'newUserName');
+    var newPass = document.createElement('input');
+    newPass.setAttribute('type', 'password');
+    newPass.setAttribute('placeholder', 'Password');
+    newPass.setAttribute('name', 'newPassword');
+    var confirmPass = document.createElement('input');
+    confirmPass.setAttribute('type', 'password');
+    confirmPass.setAttribute('placeholder', 'Confirm Password');
+    confirmPass.setAttribute('name', 'confirmPassword');
+    var submitButton = document.createElement('input');
+    submitButton.setAttribute('type', 'submit');
+    submitButton.setAttribute('value', "Submit");
+    submitButton.setAttribute('id', 'submitButton');
+
+    loginForm.appendChild(newUser);
+    loginForm.appendChild(newPass);
+    loginForm.appendChild(confirmPass);
+    loginForm.appendChild(submitButton);
+    wrapper.appendChild(loginForm);
+    document.body.appendChild(wrapper);
+
+    jQuery('#newUserForm').on('submit', function () {
+      var newname = jQuery('#newUserForm').serialize().split('=')[1].split('&')[0];
+      localStorage.setItem('username', newname);
+      console.log('username', newname);
+      jQuery.post("http://myrecipebox.herokuapp.com/addUser", jQuery('#newUserForm').serialize(), function(data){
+        return true;
+      });
+    });
   }
+
 };
 
 // var adapterURL = chrome.extension.getURL("adapter.html");
@@ -242,48 +375,19 @@ document.addEventListener('DOMContentLoaded', function () {
   console.log("add event listener")
 
   if (!localStorage.getItem('username')) {
-    // display Facebook login title and link
-    //add a div with text to say to try a new username
-    var wrapper = document.createElement('div');
-    wrapper.innerHTML = "Please type in a unique username to start saving and sharing recipes now!";
-    var loginForm = document.createElement('form');
-    loginForm.setAttribute('id', 'newUserForm');
-    var newUser = document.createElement('input');
-    newUser.setAttribute('type', 'text');
-    newUser.setAttribute('placeholder', 'Username');
-    newUser.setAttribute('name', 'newUserName');
-    var newPass = document.createElement('input');
-    newPass.setAttribute('type', 'password');
-    newPass.setAttribute('placeholder', 'Password');
-    newPass.setAttribute('name', 'newPassword');
-    var submitButton = document.createElement('input');
-    submitButton.setAttribute('type', 'submit');
-    submitButton.setAttribute('value', "Submit");
 
+    recipeOrganizer.displayLogin();
     
-    loginForm.appendChild(newUser);
-    loginForm.appendChild(newPass);
-    loginForm.appendChild(submitButton);
-    wrapper.appendChild(loginForm);
-    document.body.appendChild(wrapper);
-
-    jQuery('#newUserForm').on('submit', function () {
-      var newname = jQuery('#newUserForm').serialize().split('=')[1].split('&')[0];
-      localStorage.setItem('username', newname);
-      console.log('username', newname);
-      jQuery.post("http://myrecipebox.herokuapp.com/addUser", jQuery('#newUserForm').serialize(), function(data){
-        return true;
-      });
-    });
   }
   else {
     // get user email from Facebook access token
       var username = localStorage.getItem('username');
       console.log("username", username);
 
+        recipeOrganizer.displayLogout(username);
         recipeOrganizer.displayFolders(username);
         recipeOrganizer.displayNewFolder(username);
-        recipeOrganizer.displayButton(username);
+
           }
 
 
