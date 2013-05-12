@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.appendChild(wrapper);
 
     jQuery('#newUserForm').on('submit', function () {
-      var newname = jQuery('#newUserForm').serialize().split('=')[1];
+      var newname = jQuery('#newUserForm').serialize().split('=')[1].split('&')[0];
       localStorage.setItem('username', newname);
       console.log('username', newname);
       jQuery.post("http://myrecipebox.herokuapp.com/addUser", jQuery('#newUserForm').serialize(), function(data){
