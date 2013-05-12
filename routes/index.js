@@ -8,6 +8,8 @@ var Recipe = models.Recipe;
 var Folder = models.Folder;
 var User = models.User;
 
+var bcrypt = require('bcrypt');
+
 exports.index = function(req, res){
   res.render('index2', { folders: [], email: "", title: 'Recipes'});
 };
