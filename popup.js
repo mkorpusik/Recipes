@@ -210,6 +210,7 @@ var recipeOrganizer = {
     var submitButton = document.createElement('input');
     submitButton.setAttribute('type', 'submit');
     submitButton.setAttribute('value', "New Folder");
+    submitButton.style.margin = '0px 0px 0px 20px';
 
     form.appendChild(folderIn);
     form.appendChild(emailHidden);
@@ -244,14 +245,28 @@ var recipeOrganizer = {
   * Displays the button that, when clicked, logs the user out.
   */
   displayLogout: function(usrEmail) {
-
+    var redbar = document.createElement('div');
+    redbar.style.backgroundColor = '#E62914';
+    redbar.style.color = 'white';
+    redbar.style.padding = '10px 10px 10px 10px';
+    redbar.style.margin = '0px 0px 10px 0px';
+    var hello = document.createElement('div');
+    hello.innerHTML = "Logged in as "+usrEmail;
+    hello.style.display = 'inline-block';
+    hello.style.margin = '10px 40px 0px 0px';
     var form = document.createElement('form');
     form.setAttribute('id', 'logoutForm');
+    form.style.display = 'inline-block';
     var submitButton = document.createElement('input');
     submitButton.setAttribute('type', 'submit');
     submitButton.setAttribute('value', "Logout");
+    submitButton.style.display = 'inline-block';
+    submitButton.style.float = 'right';
+    hello.style.margin = '0px 20px 0px 0px';
+    form.appendChild(hello);
     form.appendChild(submitButton);
-    document.body.appendChild(form);
+    redbar.appendChild(form);
+    document.body.appendChild(redbar);
     jQuery('#logoutForm').on('submit', function () {
       console.log("logging out");
       localStorage.removeItem('username');
@@ -266,10 +281,13 @@ var recipeOrganizer = {
 
     // display Facebook login title and link
     //add a div with text to say to try a new username
-    var wrapper = document.createElement('div');
+    var redbar = document.createElement('div');
     //wrapper.innerHTML = "Please type in a unique username to start saving and sharing recipes now!";
-    wrapper.innerHTML = "Log in with an existing account or click Create Account";
-
+    redbar.innerHTML = "Log in with your existing credentials or click 'Create Account'";
+    redbar.style.backgroundColor = '#E62914';
+    redbar.style.color = 'white';
+    redbar.style.padding = '10px 10px 10px 10px';
+    redbar.style.margin = '0px 0px 10px 0px';
 
     var loginForm = document.createElement('form');
     loginForm.setAttribute('id', 'loginForm');
@@ -277,18 +295,22 @@ var recipeOrganizer = {
     newUser.setAttribute('type', 'text');
     newUser.setAttribute('placeholder', 'Username');
     newUser.setAttribute('name', 'newUserName');
+    newUser.style.margin = '0px 0px 10px 0px';
     var newPass = document.createElement('input');
     newPass.setAttribute('type', 'password');
     newPass.setAttribute('placeholder', 'Password');
     newPass.setAttribute('name', 'newPassword');
+    newPass.style.margin = '0px 0px 10px 0px';
     var submitButton = document.createElement('input');
     submitButton.setAttribute('type', 'submit');
     submitButton.setAttribute('value', "Submit");
     submitButton.setAttribute('id', 'submitButton');
+    submitButton.style.display = 'block';
 
     var newUserButton = document.createElement('BUTTON');
     newUserButton.innerHTML = "Create Account";
     newUserButton.setAttribute('id', 'createButton');
+    newUserButton.style.margin = '20px 0px 0px 0px';
     newUserButton.onclick = function(){
       recipeOrganizer.displaySingup();
 
@@ -299,9 +321,10 @@ var recipeOrganizer = {
     loginForm.appendChild(newPass);
     loginForm.appendChild(submitButton);
     // loginForm.appendChild(newUserButton);
-    wrapper.appendChild(loginForm);
-    wrapper.appendChild(newUserButton);
-    document.body.appendChild(wrapper);
+    
+    document.body.appendChild(redbar);
+    document.body.appendChild(loginForm);
+    document.body.appendChild(newUserButton);
 
     jQuery('#loginForm').on('submit', function () {
       var newname = jQuery('#loginForm').serialize().split('=')[1].split('&')[0];
@@ -330,10 +353,12 @@ var recipeOrganizer = {
     var newElement = document.createElement('body');
     document.body = newElement;
 
-    var wrapper = document.createElement('div');
-    //wrapper.innerHTML = "Please type in a unique username to start saving and sharing recipes now!";
-    wrapper.innerHTML = "Log in with an existing account or click Create Account";
-
+    var redbar = document.createElement('div');
+    redbar.innerHTML = "Please type in a unique username and any password to start saving and sharing recipes now!";
+    redbar.style.backgroundColor = '#E62914';
+    redbar.style.color = 'white';
+    redbar.style.padding = '10px 10px 10px 10px';
+    redbar.style.margin = '0px 0px 10px 0px';
 
     var loginForm = document.createElement('form');
     loginForm.setAttribute('id', 'newUserForm');
@@ -341,25 +366,30 @@ var recipeOrganizer = {
     newUser.setAttribute('type', 'text');
     newUser.setAttribute('placeholder', 'Username');
     newUser.setAttribute('name', 'newUserName');
+    newUser.style.margin = '0px 0px 10px 0px';
     var newPass = document.createElement('input');
     newPass.setAttribute('type', 'password');
     newPass.setAttribute('placeholder', 'Password');
     newPass.setAttribute('name', 'newPassword');
+    newPass.style.margin = '0px 0px 10px 0px';
     var confirmPass = document.createElement('input');
     confirmPass.setAttribute('type', 'password');
     confirmPass.setAttribute('placeholder', 'Confirm Password');
     confirmPass.setAttribute('name', 'confirmPassword');
+    confirmPass.style.margin = '0px 0px 10px 0px';
     var submitButton = document.createElement('input');
     submitButton.setAttribute('type', 'submit');
     submitButton.setAttribute('value', "Submit");
     submitButton.setAttribute('id', 'submitButton');
+    submitButton.style.display = 'block';
 
     loginForm.appendChild(newUser);
     loginForm.appendChild(newPass);
     loginForm.appendChild(confirmPass);
     loginForm.appendChild(submitButton);
-    wrapper.appendChild(loginForm);
-    document.body.appendChild(wrapper);
+    document.body.appendChild(redbar);
+    document.body.appendChild(loginForm);
+    
 
     jQuery('#newUserForm').on('submit', function () {
       var newname = jQuery('#newUserForm').serialize().split('=')[1].split('&')[0];
