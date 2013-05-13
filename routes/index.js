@@ -253,6 +253,7 @@ exports.addRecipe = function(req, res){
         if(err)
           console.log("Unable to add recipe to folder");
         }
+        res.send(null);
       );
     });
   });
