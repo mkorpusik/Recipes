@@ -220,8 +220,9 @@ var recipeOrganizer = {
     jQuery('#addFolderForm').on('submit', function () {
       jQuery.post("http://myrecipebox.herokuapp.com/addFolder", jQuery('#addFolderForm').serialize(), function(data){
         console.log("successfully created folder")
-        return true;
+        document.location.reload(true);
       });
+      return false;
     });
     
   },
@@ -312,8 +313,10 @@ var recipeOrganizer = {
         } else {
           window.alert("Incorrect username or password");
         }
+        document.location.reload(true);
         //return true;
       });
+      return false;
     });
 
   },
@@ -370,8 +373,9 @@ var recipeOrganizer = {
         } else {
           window.alert("Passwords do not match");
         }
-        return true;
+        document.location.reload(true);
       });
+      return false;
     });
   }
 

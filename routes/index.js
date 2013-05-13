@@ -149,8 +149,12 @@ exports.loginUser = function(req, res){
   var username = req.body.newUserName;
   var password = req.body.newPassword;
 
+  console.log("username in", username);
+  console.log(password);
+
   var findUser = User.findOne({'username':username}).exec(function(foundUser, error) {
     if (error  || foundUser == null) {
+      console.log("foundUser", foundUser);
       console.log("error or null");
       res.send('false');
     } else {
