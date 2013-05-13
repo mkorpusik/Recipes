@@ -19,8 +19,8 @@ block content
                   li
                     a(href='/recipes/:'+email+'/:'+liFolder._id) #{liFolder.title}                
 
-  div(id=folder._id, class="folder")
-    h1 #{folder.title} 
+  div(id=folder._id, class="folder", style="padding-top:0px")
+    h1 #{folder.title}
     form(action="/deleteFolder", method="post", class="form-inline")
         input(type="hidden", name="userEmail", value=email)
         input(type="hidden", name="folder", value=folder._id)

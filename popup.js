@@ -137,7 +137,7 @@ var recipeOrganizer = {
     for (var i = 0; i < folderNames.length; i++) {
       // add wrapper div
       var folder = document.createElement('div');
-      folder.setAttribute('id', folderNames[i]);
+      folder.setAttribute('id', folderIds[i]);
       folder.style.padding = '0px 0px 5px 0px';
       document.body.appendChild(folder);
 
