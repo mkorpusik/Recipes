@@ -231,7 +231,7 @@ exports.addRecipe = function(req, res){
   var title = req.body.title;
   var img = req.body.img;
   console.log('url', url);
-  console.log('folder', folder);
+  console.log('folder ID', folder);
 
   // add to mongoose db
   var recipe = new Recipe({ url: url, title:title, img:img, notes:[]});
@@ -239,7 +239,7 @@ exports.addRecipe = function(req, res){
     if (err)
       return console.log(err);
 
-    var currentFolder = Folder.findOne({title: folder}).populate('recipes').exec(function (err, docs){
+    var currentFolder = Folder.findOne({'_id': folder}).populate('recipes').exec(function (err, docs){
       if(err)
         console.log("Unable to find folder");
       var current_recipes = docs.recipes;

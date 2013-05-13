@@ -73,21 +73,21 @@ var recipeOrganizer = {
       var req = new XMLHttpRequest();
       req.open("POST", 'http://myrecipebox.herokuapp.com/addRecipe', true);
       req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      // req.onreadystatechange = function() {
-      //   console.log("status", req.status);
-      //   if (req.status == 200) {
-      //     // after 1 sec, change button's background image back to normal
-      //     var myVar=setInterval(function(){
-      //       btn.style.backgroundImage = 'url("public/folder.png")';
-      //     },1000);
-      //   }
-      // }
+      req.onreadystatechange = function() {
+        console.log("status", req.status);
+        if (req.status == 200) {
+          // after 1 sec, change button's background image back to normal
+          var myVar=setInterval(function(){
+            btn.style.backgroundImage = 'url("public/folder.png")';
+          },1000);
+        }
+      }
       req.send('url='+url+'&folder='+folderID+'&title='+title+'&img='+img);
-      // console.log("response", req.responseXML);
+      console.log("response", req.responseXML);
       // after 1 sec, change button's background image back to normal
-      var myVar=setInterval(function(){
-        btn.style.backgroundImage = 'url("public/folder.png")';
-      },1000);
+      // var myVar=setInterval(function(){
+      //   btn.style.backgroundImage = 'url("public/folder.png")';
+      // },1000);
     });
   },
 
@@ -143,7 +143,7 @@ var recipeOrganizer = {
 
       // add folder icon 
       var btn = document.createElement('BUTTON');
-      btn.setAttribute('id', folderNames[i]);
+      btn.setAttribute('id', folderIds[i]);
       btn.style.backgroundImage = 'url("public/folder.png")';
       btn.style.backgroundRepeat = 'no-repeat';
       btn.style.backgroundSize = '35px 35px';
@@ -154,7 +154,7 @@ var recipeOrganizer = {
       btn.onclick = function() {
         recipeOrganizer.saveRecipe(this.id, this);
       };
-      document.getElementById(folderNames[i]).appendChild(btn);
+      document.getElementById(folderIds[i]).appendChild(btn);
 
       // add label div
       // var label = document.createElement('div');
@@ -171,7 +171,7 @@ var recipeOrganizer = {
       label.appendChild(linkText);
       label.href = "http://myrecipebox.herokuapp.com/recipes/:"+usrEmail+"/:"+folderIds[i];
       label.target = "_blank";
-      document.getElementById(folderNames[i]).appendChild(label);
+      document.getElementById(folderIds[i]).appendChild(label);
     }
   },
 
