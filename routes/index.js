@@ -111,8 +111,9 @@ exports.addFolder = function(req, res){
   if (folderName.length > 0) {
     folder.save(function (err) {
       if (err)
-        return console.log(err);
+        console.log(err);
     });
+    res.send(null);
   }
 };
 

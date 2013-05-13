@@ -218,6 +218,7 @@ var recipeOrganizer = {
     document.body.appendChild(wrapper);
 
     jQuery('#addFolderForm').on('submit', function () {
+      console.log("button clicked");
       jQuery.post("http://myrecipebox.herokuapp.com/addFolder", jQuery('#addFolderForm').serialize(), function(data){
         console.log("successfully created folder")
         document.location.reload(true);
