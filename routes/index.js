@@ -150,9 +150,9 @@ exports.loginUser = function(req, res){
   var password = req.body.newPassword;
 
   console.log("username in", username);
-  console.log(password);
+  console.log("password", password);
 
-  var findUser = User.findOne({'username':username}).exec(function(foundUser, error) {
+  var findUser = User.findOne({'username': username}).exec(function(error, foundUser){
     if (error  || foundUser == null) {
       console.log("foundUser", foundUser);
       console.log("error or null");
